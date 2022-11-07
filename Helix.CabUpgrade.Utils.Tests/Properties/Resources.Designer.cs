@@ -286,6 +286,37 @@ namespace Helix.CabUpgrade.Utils.Tests.Properties {
         ///   &quot;application&quot; : &quot;HX Edit&quot;,
         ///   &quot;appversion&quot; : 55083877,
         ///   &quot;build_sha&quot; : &quot;ec7605f&quot;,
+        ///   &quot;modifieddate&quot; : 1667773712,
+        ///   &quot;name&quot; : &quot;Legacy Sngl Cab&quot;
+        ///  },
+        ///  &quot;tone&quot; : {
+        ///   &quot;dsp0&quot; : {
+        ///    &quot;inputA&quot; : {
+        ///     &quot;@input&quot; : 1,
+        ///     &quot;@model&quot; : &quot;HD2_AppDSPFlow1Input&quot;,
+        ///     &quot;decay&quot; : 0.10,
+        ///     &quot;noiseGate&quot; : false,
+        ///     &quot;threshold&quot; : -48.0
+        ///    },
+        ///    &quot;inputB&quot; : {
+        ///     &quot;@input&quot; : 0,
+        ///     &quot;@model&quot; : &quot;HD2_AppDSPFlow2Input&quot;, [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Legacy_Single_Cab_Path_B {
+            get {
+                return ResourceManager.GetString("Legacy Single Cab Path B", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        /// &quot;data&quot; : {
+        ///  &quot;device&quot; : 2162689,
+        ///  &quot;device_version&quot; : 55574528,
+        ///  &quot;meta&quot; : {
+        ///   &quot;application&quot; : &quot;HX Edit&quot;,
+        ///   &quot;appversion&quot; : 55083877,
+        ///   &quot;build_sha&quot; : &quot;ec7605f&quot;,
         ///   &quot;modifieddate&quot; : 1667769580,
         ///   &quot;name&quot; : &quot;Sng Cab 3SS 2P&quot;
         ///  },
