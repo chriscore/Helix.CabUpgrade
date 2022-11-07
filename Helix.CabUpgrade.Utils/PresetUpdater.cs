@@ -116,6 +116,7 @@ namespace Helix.CabUpgrade.Utils
             @enabled, @no_snapshot_bypass, @path, @position, Distance, HighCut, Level, LowCut
 
             Special case for dual cab: @cab, Delay (does not appear on the secondary), Pan (appears on primary & secondary)
+            TODO: implement migration path for Delay and Pan
 
             Properties with a different key:
             @mic -> Mic
