@@ -99,7 +99,7 @@ namespace Helix.CabUpgrade.Utils
 
                         UpgradeLegacyCab(props, _defaults.CabModelPrimaryOverride, block.Name.StartsWith("cab")); // last arg always false?
 
-                        json["data"]["tone"][dsp][blockName] = new JObject(props);
+                        json["data"]["tone"][dsp][blockName] = new JObject(props); // TODO: need to test dual cabs
                     }
                     else
                     {
