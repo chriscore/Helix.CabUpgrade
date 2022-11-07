@@ -108,6 +108,7 @@ namespace Helix.CabUpgrade.Utils
             */
             var oldCabModel = cabProperties.SingleOrDefault(a => a.Name.Equals("@model")).Value.ToString();
             var newModel = _cabMapper.MapNewCabModel(oldCabModel, overrideCabModel);
+            _propertyMapper.UpdateBlockPropertyValue(cabProperties, "@model", "@model", newModel);
 
             _propertyMapper.UpdateBlockPropertyValue(cabProperties, "@mic", "Mic");
 
