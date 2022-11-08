@@ -51,6 +51,7 @@ builder.Services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 builder.Services.AddScoped<IPropertyMapper, PropertyMapper>();
 builder.Services.AddScoped<ICabMapper, CabMapper>();
 builder.Services.AddScoped<IPresetUpdater, PresetUpdater>();
+builder.Services.AddScoped<IMicMapper, MicMapper>();
 
 var app = builder.Build();
 
