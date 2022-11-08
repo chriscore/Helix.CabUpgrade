@@ -40,13 +40,13 @@ namespace Helix.CabUpgrade.Utils
             var version = json["version"].ToObject<int>();
             if (version != 6)
             {
-                throw new Exception($"Invalid preset version: {version}");
+                throw new Exception($"Invalid preset version: {version}. Helix Cab Upgrade currently only supports helix presets using version 6.");
             }
 
             var schema = json["schema"].ToObject<string>();
             if (!schema.Equals("L6Preset"))
             {
-                throw new Exception($"Invalid schema: {schema}");
+                throw new Exception($"Invalid schema: {schema}. Helix Cab Upgrade currently only supports preset files with schema 'L6Preset'.");
             }
             var patchName = json["data"]["meta"]["name"].ToObject<string>();
 

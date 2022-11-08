@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.Options;
 using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace Helix.CabUpgrade.Web.Pages
@@ -31,15 +32,24 @@ namespace Helix.CabUpgrade.Web.Pages
         public string PrimaryCabOverride { get; set; }
         [BindProperty]
         public string SecondaryCabOverride { get; set; }
-        public async Task<FileContentResult> OnPostAsync()
+        public async Task<ActionResult> OnPostAsync()
         {
-            var json = await ReadFormFileAsync(Upload);
-            _logger.LogInformation(json);
-            
-            var result = _presetUpdater.UpdatePresetJson(json, new PresetUpdaterDefaults());
+            try
+            {
+                var json = await ReadFormFileAsync(Upload);
+                _logger.LogInformation(json);
 
-            byte[] bytes = Encoding.ASCII.GetBytes(result.PresetJson);
-            return File(bytes, Upload.ContentType, $"{result.PatchName}.hlx");
+                var result = _presetUpdater.UpdatePresetJson(json, new PresetUpdaterDefaults());
+
+                byte[] bytes = Encoding.ASCII.GetBytes(result.PresetJson);
+                return File(bytes, Upload.ContentType, $"{result.PatchName}.hlx");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error caught during user preset upgrade");
+                Response.StatusCode = 400;
+                return Content(e.Message);
+            }
         }
 
         public static Task<string?> ReadFormFileAsync(IFormFile file)

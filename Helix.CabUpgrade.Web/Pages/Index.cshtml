@@ -6,14 +6,19 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Please choose a .hlx preset file, then press Submit. Your updated preset will be downloaded.</p>
-
+    <p>Please choose a .hlx preset file, then press Submit. Your updated preset will be downloaded.</p><br />
+    <p>Not all Legacy cabs have a corresponding cab in new Helix Firmware. In case of an error because of the cab no longer existing in Helix, please choose a Primary/Secondary target cab override using the drop downs to migrate to one of the new cab models.</p>
+    <br /><br />
     <form method="post" enctype="multipart/form-data">
-        <label asp-for="PrimaryCabOverride"></label> <input type="Override target cab (primary)" asp-for="PrimaryCabOverride" /><br>
-        <label asp-for="SecondaryCabOverride"></label> <input type="Override target cab (secondary or amp/cab)" asp-for="SecondaryCabOverride" /><br>
-        <br />
-        <input type="file" asp-for="Upload" />
-        <input type="submit" />
+        <div>
+            <label asp-for="PrimaryCabOverride"></label> <input type="Override target cab (primary)" asp-for="PrimaryCabOverride" /><br>
+            <label asp-for="SecondaryCabOverride"></label> <input type="Override target cab (secondary or amp/cab)" asp-for="SecondaryCabOverride" /><br>
+            <br />
+        </div>
+        <div>
+            <label for="file">Helix Preset to Update: </label>
+            <input type="file" accept=".hlx" asp-for="Upload" />
+            <input type="submit" />
+        </div>
     </form>
-
 </div>
