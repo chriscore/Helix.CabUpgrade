@@ -27,7 +27,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             var updater = new PresetUpdater(mockPresetUpdaterLog.Object, mockCabMapper.Object, propertyMapper, defaults);
 
             string testCase = Resources.Legacy_Single_Cab;
-            var transformedCab = JToken.Parse(updater.UpdatePresetJson(testCase)).SelectToken("$.data.tone.dsp0.block0");
+            var transformedCab = JToken.Parse(updater.UpdatePresetJson(testCase).PresetJson).SelectToken("$.data.tone.dsp0.block0");
 
             transformedCab.Should().BeEquivalentTo(JToken.FromObject(new Dictionary<string, object>
             {
@@ -64,7 +64,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             var updater = new PresetUpdater(mockPresetUpdaterLog.Object, mockCabMapper.Object, propertyMapper, defaults);
 
             string testCase = Resources.Legacy_Single_Cab_Path_B;
-            var transformedCab = JToken.Parse(updater.UpdatePresetJson(testCase)).SelectToken("$.data.tone.dsp1.block0");
+            var transformedCab = JToken.Parse(updater.UpdatePresetJson(testCase).PresetJson).SelectToken("$.data.tone.dsp1.block0");
 
             transformedCab.Should().BeEquivalentTo(JToken.FromObject(new Dictionary<string, object>
             {
@@ -102,7 +102,7 @@ namespace Helix.CabUpgrade.Utils.Tests
 
             string testCase = Resources.Legacy_Amp_and_Cab;
             var result = updater.UpdatePresetJson(testCase);
-            var transformedCab = JToken.Parse(result).SelectToken("$.data.tone.dsp0.cab0");
+            var transformedCab = JToken.Parse(result.PresetJson).SelectToken("$.data.tone.dsp0.cab0");
 
             transformedCab.Should().BeEquivalentTo(JToken.FromObject(new Dictionary<string, object>
             {
