@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "appConfig1": {
+      "secretStore": "LocalSecretsFile",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.AppConfiguration/configurationStores/helixupdaterappconfiguration",
+      "type": "appConfig.azure",
+      "connectionId": "AppConfig"
+    }
+  }
+}

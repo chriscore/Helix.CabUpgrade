@@ -3,6 +3,7 @@ using Helix.CabUpgrade.Utils.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.ObjectPool;
+using Microsoft.Extensions.Options;
 using System.Reflection.Metadata;
 using System.Text;
 
@@ -12,11 +13,13 @@ namespace Helix.CabUpgrade.Web.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         private readonly IPresetUpdater _presetUpdater;
+        private readonly Settings _settings;
 
-        public IndexModel(ILogger<IndexModel> logger, IPresetUpdater updater)
+        public IndexModel(ILogger<IndexModel> logger, IPresetUpdater updater, IOptionsSnapshot<Settings> options)
         {
             _logger = logger;
             _presetUpdater = updater;
+            _settings = options.Value;
         }
 
         public void OnGet()

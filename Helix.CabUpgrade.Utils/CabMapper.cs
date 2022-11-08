@@ -1,5 +1,6 @@
 ﻿using Helix.CabUpgrade.Utils.Interfaces;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Helix.CabUpgrade.Utils.Tests")]
@@ -10,17 +11,12 @@ namespace Helix.CabUpgrade.Utils
     {
         private readonly ILogger<CabMapper> _logger;
 
-        private Dictionary<string, string> CabModelMap { get; set; }
+        private Settings _settings;
 
-        public CabMapper(ILogger<CabMapper> logger, CabMapConfiguration cabModelMap)
+        public CabMapper(ILogger<CabMapper> logger, IOptionsSnapshot<Settings> options)
         {
-            if (cabModelMap == null)
-            {
-                throw new ArgumentException("Failed to create CabMapper. Cab model map cannot be null", "cabModelMap");
-            }
-
             _logger = logger;
-            CabModelMap = cabModelMap._cabMap;
+            _settings = options.Value;
         }
 
         public virtual string MapNewCabModel(string oldCabModel, string? overrideCabModel)
@@ -33,9 +29,9 @@ namespace Helix.CabUpgrade.Utils
                 newCabModel = overrideCabModel;
                 _logger.LogInformation($"Mapped {oldCabModel} -> {newCabModel} using override");
             }
-            else if (CabModelMap.ContainsKey(oldCabModel))
+            else if (_settings.CabMapping.ContainsKey(oldCabModel))
             {
-                newCabModel = CabModelMap[oldCabModel];
+                newCabModel = _settings.CabMapping[oldCabModel];
                 _logger.LogInformation($"Mapped {oldCabModel} -> {newCabModel}");
             }
 
