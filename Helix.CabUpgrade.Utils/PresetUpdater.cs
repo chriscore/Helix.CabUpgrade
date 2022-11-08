@@ -1,15 +1,16 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Helix.CabUpgrade.Utils.Interfaces;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
 
 namespace Helix.CabUpgrade.Utils
 {
-    public class PresetUpdater
+    public class PresetUpdater : IPresetUpdater
     {
         private readonly ILogger<PresetUpdater> _logger;
-        private readonly CabMapper _cabMapper;
-        private readonly PropertyMapper _propertyMapper;
+        private readonly ICabMapper _cabMapper;
+        private readonly IPropertyMapper _propertyMapper;
         private PresetUpdaterDefaults _defaults;
 
         private const string LegacyCabIdentifier = "HD2_Cab";
@@ -17,7 +18,7 @@ namespace Helix.CabUpgrade.Utils
         private const int SingleCabBlockType = 2;
         private const int DualCabBlockType = 4;
 
-        public PresetUpdater(ILogger<PresetUpdater> logger, CabMapper cabMapper, PropertyMapper propertyMapper, PresetUpdaterDefaults defaults)
+        public PresetUpdater(ILogger<PresetUpdater> logger, ICabMapper cabMapper, IPropertyMapper propertyMapper, PresetUpdaterDefaults defaults)
         {
             _logger = logger;
             _cabMapper = cabMapper;
@@ -31,14 +32,25 @@ namespace Helix.CabUpgrade.Utils
         /// <param name="presetContent"></param>
         /// <param name="overrideCabModel"></param>
         /// <returns></returns>
-        public string UpdatePresetJson(string presetContent)
+        public UpdatePresetJsonResponse UpdatePresetJson(string presetContent)
         {
             var json = JObject.Parse(presetContent);
 
+            var version = json["version"].ToObject<int>();
+            if (version != 6)
+            {
+                throw new Exception($"Invalid preset version: {version}");
+            }
+
+            var schema = json["schema"].ToObject<string>();
+            if (!schema.Equals("L6Preset"))
+            {
+                throw new Exception($"Invalid schema: {schema}");
+            }
+            var patchName = json["data"]["meta"]["name"].ToObject<string>();
+
             UpdateCabsForDspNode(json, "dsp0");
             UpdateCabsForDspNode(json, "dsp1");
-
-            string result;
 
             // todo: reproduce the way helix hlx files are serialised..
             // maybe this is important, maybe not
@@ -55,7 +67,7 @@ namespace Helix.CabUpgrade.Utils
                 (new JsonSerializer()).Serialize(jtw, json);
             }
 
-            result = sb.ToString();
+            var result = new UpdatePresetJsonResponse(sb.ToString(), patchName);
             return result;
         }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Helix.CabUpgrade.Utils.Interfaces;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Helix.CabUpgrade.Utils
 {
-    public class PropertyMapper
+    public class PropertyMapper : IPropertyMapper
     {
         private readonly ILogger<PropertyMapper> _logger;
 

@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Helix.CabUpgrade.Utils.Interfaces;
 using Helix.CabUpgrade.Utils.Tests.Properties;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -15,7 +16,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             var mockPresetUpdaterLog = new Mock<ILogger<PresetUpdater>>();
             var mockPropertyMapper = new Mock<ILogger<PropertyMapper>>();
 
-            var mockCabMapper = new Mock<CabMapper>();
+            var mockCabMapper = new Mock<ICabMapper>();
             mockCabMapper
                 .Setup(a => a.MapNewCabModel(It.IsAny<string>(), It.IsAny<string?>()))
                 .Returns(() => "Mocked Mapped Cab");
@@ -52,7 +53,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             var mockPresetUpdaterLog = new Mock<ILogger<PresetUpdater>>();
             var mockPropertyMapper = new Mock<ILogger<PropertyMapper>>();
 
-            var mockCabMapper = new Mock<CabMapper>();
+            var mockCabMapper = new Mock<ICabMapper>();
             mockCabMapper
                 .Setup(a => a.MapNewCabModel(It.IsAny<string>(), It.IsAny<string?>()))
                 .Returns(() => "Mocked Mapped Cab");
@@ -89,7 +90,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             var mockPresetUpdaterLog = new Mock<ILogger<PresetUpdater>>();
             var mockPropertyMapper = new Mock<ILogger<PropertyMapper>>();
 
-            var mockCabMapper = new Mock<CabMapper>();
+            var mockCabMapper = new Mock<ICabMapper>();
             mockCabMapper
                 .Setup(a => a.MapNewCabModel(It.IsAny<string>(), It.IsAny<string?>()))
                 .Returns(() => "Mocked Mapped Cab");

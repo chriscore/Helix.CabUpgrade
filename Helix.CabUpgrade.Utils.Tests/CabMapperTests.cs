@@ -16,7 +16,7 @@ namespace Helix.CabUpgrade.Utils.Tests
         [Fact]
         public void MapNewCabModel_ThrowsWhenEmptyMap()
         {
-            var map = new Dictionary<string, string>();
+            var map = new CabMapConfiguration();
             var mockLog = new Mock<ILogger<CabMapper>>();
             var mapper = new CabMapper(mockLog.Object, map);
 
@@ -26,7 +26,8 @@ namespace Helix.CabUpgrade.Utils.Tests
         [Fact]
         public void MapNewCabModel_ThrowsWhenMissingDefaultNoOverride()
         {
-            var map = new Dictionary<string, string> { { "HD2_Cab4x12XXLV30", "HD2_CabMicIr_4x12MOONT75"} };
+            var map = new CabMapConfiguration();
+            map._cabMap.Add("HD2_Cab4x12XXLV30", "HD2_CabMicIr_4x12MOONT75");
             var mockLog = new Mock<ILogger<CabMapper>>();
             var mapper = new CabMapper(mockLog.Object, map);
 
@@ -36,7 +37,8 @@ namespace Helix.CabUpgrade.Utils.Tests
         [Fact]
         public void MapNewCabModel_MapsWhenLegacyCabMatchedNoOverride()
         {
-            var map = new Dictionary<string, string> { { "HD2_Cab4x12XXLV30", "HD2_CabMicIr_4x12MOONT75" } };
+            var map = new CabMapConfiguration();
+            map._cabMap.Add("HD2_Cab4x12XXLV30", "HD2_CabMicIr_4x12MOONT75");
             var mockLog = new Mock<ILogger<CabMapper>>();
             var mapper = new CabMapper(mockLog.Object, map);
 
@@ -47,7 +49,8 @@ namespace Helix.CabUpgrade.Utils.Tests
         [Fact]
         public void MapNewCabModel_MapsWhenLegacyCabMatched_WithOverride()
         {
-            var map = new Dictionary<string, string> { { "HD2_Cab4x12XXLV30", "HD2_CabMicIr_4x12MOONT75" } };
+            var map = new CabMapConfiguration();
+            map._cabMap.Add("HD2_Cab4x12XXLV30", "HD2_CabMicIr_4x12MOONT75");
             var mockLog = new Mock<ILogger<CabMapper>>();
             var mapper = new CabMapper(mockLog.Object, map);
 
@@ -58,7 +61,8 @@ namespace Helix.CabUpgrade.Utils.Tests
         [Fact]
         public void MapNewCabModel_MapsWhenLegacyCabNotMatched_WithOverride()
         {
-            var map = new Dictionary<string, string> { { "HD2_Cab4x12XXLV30", "HD2_CabMicIr_4x12MOONT75" } };
+            var map = new CabMapConfiguration();
+            map._cabMap.Add("HD2_Cab4x12XXLV30", "HD2_CabMicIr_4x12MOONT75");
             var mockLog = new Mock<ILogger<CabMapper>>();
             var mapper = new CabMapper(mockLog.Object, map);
 

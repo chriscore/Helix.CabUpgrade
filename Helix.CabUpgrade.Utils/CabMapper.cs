@@ -1,17 +1,18 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Helix.CabUpgrade.Utils.Interfaces;
+using Microsoft.Extensions.Logging;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Helix.CabUpgrade.Utils.Tests")]
 
 namespace Helix.CabUpgrade.Utils
 {
-    public class CabMapper
+    public class CabMapper : ICabMapper
     {
         private readonly ILogger<CabMapper> _logger;
 
-        public Dictionary<string, string> CabModelMap { get; set; }
+        private Dictionary<string, string> CabModelMap { get; set; }
 
-        public CabMapper()
-        { }
-
-        public CabMapper(ILogger<CabMapper> logger, Dictionary<string, string> cabModelMap)
+        public CabMapper(ILogger<CabMapper> logger, CabMapConfiguration cabModelMap)
         {
             if (cabModelMap == null)
             {
@@ -19,7 +20,7 @@ namespace Helix.CabUpgrade.Utils
             }
 
             _logger = logger;
-            CabModelMap = cabModelMap;
+            CabModelMap = cabModelMap._cabMap;
         }
 
         public virtual string MapNewCabModel(string oldCabModel, string? overrideCabModel)
