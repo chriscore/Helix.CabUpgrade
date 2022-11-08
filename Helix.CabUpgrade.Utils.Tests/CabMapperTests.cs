@@ -22,7 +22,7 @@ namespace Helix.CabUpgrade.Utils.Tests
         public void MapNewCabModel_ThrowsWhenMissingDefaultNoOverride()
         {
             var settings = new Settings();
-            settings.CabMapping.Add("HD2_Cab4x12XXLV30", "HD2_CabMicIr_4x12MOONT75");
+            settings.CabMapping.Add("HD2_Cab4x12XXLV30", new CabInfo { Id = "HD2_CabMicIr_4x12MOONT75", Name = "TestNewCab" });
             var mockOptions = new Mock<IOptionsSnapshot<Settings>>();
             mockOptions.Setup(a => a.Value).Returns(settings);
 
@@ -36,7 +36,7 @@ namespace Helix.CabUpgrade.Utils.Tests
         public void MapNewCabModel_MapsWhenLegacyCabMatchedNoOverride()
         {
             var settings = new Settings();
-            settings.CabMapping.Add("HD2_Cab4x12XXLV30", "HD2_CabMicIr_4x12MOONT75");
+            settings.CabMapping.Add("HD2_Cab4x12XXLV30", new CabInfo { Id = "HD2_CabMicIr_4x12MOONT75", Name = "TestNewCab" });
             var mockOptions = new Mock<IOptionsSnapshot<Settings>>();
             mockOptions.Setup(a => a.Value).Returns(settings);
 
@@ -51,7 +51,7 @@ namespace Helix.CabUpgrade.Utils.Tests
         public void MapNewCabModel_MapsWhenLegacyCabMatched_WithOverride()
         {
             var settings = new Settings();
-            settings.CabMapping.Add("HD2_Cab4x12XXLV30", "HD2_CabMicIr_4x12MOONT75");
+            settings.CabMapping.Add("HD2_Cab4x12XXLV30", new CabInfo { Id = "HD2_CabMicIr_4x12MOONT75", Name = "TestNewCab" });
             var mockOptions = new Mock<IOptionsSnapshot<Settings>>();
             mockOptions.Setup(a => a.Value).Returns(settings);
 
@@ -66,7 +66,7 @@ namespace Helix.CabUpgrade.Utils.Tests
         public void MapNewCabModel_MapsWhenLegacyCabNotMatched_WithOverride()
         {
             var settings = new Settings();
-            settings.CabMapping.Add("HD2_Cab4x12XXLV30", "HD2_CabMicIr_4x12MOONT75");
+            settings.CabMapping.Add("HD2_Cab4x12XXLV30", new CabInfo { Id = "HD2_CabMicIr_4x12MOONT75", Name = "TestNewCab" });
             var mockOptions = new Mock<IOptionsSnapshot<Settings>>();
             mockOptions.Setup(a => a.Value).Returns(settings);
 

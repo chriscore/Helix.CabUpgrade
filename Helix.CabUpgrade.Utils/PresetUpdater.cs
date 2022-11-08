@@ -1,4 +1,5 @@
-﻿using Helix.CabUpgrade.Utils.Interfaces;
+﻿using Helix.CabUpgrade.Utils.Enums;
+using Helix.CabUpgrade.Utils.Interfaces;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -11,19 +12,19 @@ namespace Helix.CabUpgrade.Utils
         private readonly ILogger<PresetUpdater> _logger;
         private readonly ICabMapper _cabMapper;
         private readonly IPropertyMapper _propertyMapper;
-        private PresetUpdaterDefaults _defaults;
+        private readonly IMicMapper _micMapper;
 
         private const string LegacyCabIdentifier = "HD2_Cab";
         private const string NewCabIdentifier = "HD2_CabMicIr";
         private const int SingleCabBlockType = 2;
         private const int DualCabBlockType = 4;
 
-        public PresetUpdater(ILogger<PresetUpdater> logger, ICabMapper cabMapper, IPropertyMapper propertyMapper, PresetUpdaterDefaults defaults)
+        public PresetUpdater(ILogger<PresetUpdater> logger, ICabMapper cabMapper, IPropertyMapper propertyMapper, IMicMapper micMapper)
         {
             _logger = logger;
             _cabMapper = cabMapper;
             _propertyMapper = propertyMapper;
-            _defaults = defaults;
+            _micMapper = micMapper;
         }
 
         /// <summary>
@@ -32,7 +33,7 @@ namespace Helix.CabUpgrade.Utils
         /// <param name="presetContent"></param>
         /// <param name="overrideCabModel"></param>
         /// <returns></returns>
-        public UpdatePresetJsonResponse UpdatePresetJson(string presetContent)
+        public UpdatePresetJsonResponse UpdatePresetJson(string presetContent, PresetUpdaterDefaults defaults)
         {
             var json = JObject.Parse(presetContent);
 
@@ -49,8 +50,8 @@ namespace Helix.CabUpgrade.Utils
             }
             var patchName = json["data"]["meta"]["name"].ToObject<string>();
 
-            UpdateCabsForDspNode(json, "dsp0");
-            UpdateCabsForDspNode(json, "dsp1");
+            UpdateCabsForDspNode(json, "dsp0", defaults);
+            UpdateCabsForDspNode(json, "dsp1", defaults);
 
             // todo: reproduce the way helix hlx files are serialised..
             // maybe this is important, maybe not
@@ -71,7 +72,7 @@ namespace Helix.CabUpgrade.Utils
             return result;
         }
 
-        private void UpdateCabsForDspNode(JObject json, string dsp)
+        private void UpdateCabsForDspNode(JObject json, string dsp, PresetUpdaterDefaults defaults)
         {
             var dspxBlocks = json["data"]["tone"][dsp].OfType<JProperty>();
             foreach (var block in dspxBlocks)
@@ -93,7 +94,7 @@ namespace Helix.CabUpgrade.Utils
                     if (blockType == null) // secondary cabs and amp&cab block cabs will come in here
                     {
                         _logger.LogInformation($"upgrading attached cab block: {block.Name}");
-                        UpgradeLegacyCab(props, _defaults.CabModelSecondaryOrAmpCabOverride, block.Name.StartsWith("cab")); // last arg always true?
+                        UpgradeLegacyCab(props, defaults.CabModelSecondaryOrAmpCabOverride, block.Name.StartsWith("cab"), defaults); // last arg always true?
 
                         json["data"]["tone"][dsp][blockName] = new JObject(props);
                     }
@@ -101,7 +102,7 @@ namespace Helix.CabUpgrade.Utils
                     {
                         _logger.LogInformation($"upgrading legacy single cab block: {block.Name}");
 
-                        UpgradeLegacyCab(props, _defaults.CabModelPrimaryOverride, block.Name.StartsWith("cab")); // last arg always false?
+                        UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, block.Name.StartsWith("cab"), defaults); // last arg always false?
 
                         json["data"]["tone"][dsp][blockName] = new JObject(props);
                     }
@@ -109,7 +110,7 @@ namespace Helix.CabUpgrade.Utils
                     {
                         _logger.LogInformation($"upgrading legacy dual cab block: {block.Name}");
 
-                        UpgradeLegacyCab(props, _defaults.CabModelPrimaryOverride, block.Name.StartsWith("cab")); // last arg always false?
+                        UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, block.Name.StartsWith("cab"), defaults); // last arg always false?
 
                         json["data"]["tone"][dsp][blockName] = new JObject(props); // TODO: need to test dual cabs
                     }
@@ -120,8 +121,8 @@ namespace Helix.CabUpgrade.Utils
                 }
             }
         }
-
-        internal void UpgradeLegacyCab(List<JProperty> cabProperties, string? overrideCabModel, bool isSecondaryDualCab)
+        
+        internal void UpgradeLegacyCab(List<JProperty> cabProperties, string? overrideCabModel, bool isSecondaryDualCab, PresetUpdaterDefaults defaults)
         {
             /* 
             Properties which do not change:
@@ -141,14 +142,24 @@ namespace Helix.CabUpgrade.Utils
             var oldCabModel = cabProperties.SingleOrDefault(a => a.Name.Equals("@model")).Value.ToString();
             var newModel = _cabMapper.MapNewCabModel(oldCabModel, overrideCabModel);
             _propertyMapper.UpdateBlockPropertyValue(cabProperties, "@model", "@model", newModel);
-            _propertyMapper.UpdateBlockPropertyValue(cabProperties, "@mic", "Mic");
+
+            UpdateMicProperty(cabProperties);
 
             // Add new required properties with default values
-            cabProperties.Add(new JProperty("Angle", _defaults.Angle));
-            cabProperties.Add(new JProperty("Position", _defaults.Position));
+            cabProperties.Add(new JProperty("Angle", defaults.Angle));
+            cabProperties.Add(new JProperty("Position", defaults.Position));
 
             // try to remove early reflections
             bool success = cabProperties.Remove(cabProperties.SingleOrDefault(a => a.Name.Equals("EarlyReflections")));
+        }
+
+        internal void UpdateMicProperty(List<JProperty> cabProperties, NewMic defaultIfUnmappable = NewMic._57_Dynamic)
+        {
+            var newMic = _micMapper.UpdateMicProperty(cabProperties, defaultIfUnmappable);
+            if (newMic != -1)
+            {
+                _propertyMapper.UpdateBlockPropertyValue(cabProperties, "@mic", "Mic", newMic);
+            }
         }
     }
 }

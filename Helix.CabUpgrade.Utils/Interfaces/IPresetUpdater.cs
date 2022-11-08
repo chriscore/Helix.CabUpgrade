@@ -2,6 +2,6 @@
 {
     public interface IPresetUpdater
     {
-        UpdatePresetJsonResponse UpdatePresetJson(string presetContent);
+        UpdatePresetJsonResponse UpdatePresetJson(string presetContent, PresetUpdaterDefaults defaults);
     }
 }

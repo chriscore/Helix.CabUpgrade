@@ -18,8 +18,8 @@ if (!string.IsNullOrEmpty(azAppConfigConnection))
         options.Connect(azAppConfigConnection)
         .ConfigureRefresh(refresh =>
         {
-            // All configuration values will be refreshed if the sentinel key changes.
-            refresh.Register("TestApp:Settings:Sentinel", refreshAll: true);
+            // All configuration values will be refreshed if the cabmapping key changes.
+            refresh.Register("CabUpgrade:Settings:CabMapping", refreshAll: true);
         });
     });
 }
@@ -34,7 +34,7 @@ else if (Uri.TryCreate(builder.Configuration["Endpoints:AppConfig"], UriKind.Abs
         .ConfigureRefresh(refresh =>
         {
             // All configuration values will be refreshed if the sentinel key changes.
-            refresh.Register("TestApp:Settings:Sentinel", refreshAll: true);
+            refresh.Register("CabUpgrade:Settings:CabMapping", refreshAll: true);
         });
     });
 }
@@ -48,7 +48,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddLogging();
 builder.Services.AddSingleton<ILoggerFactory, LoggerFactory>();
 builder.Services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
-builder.Services.AddScoped<PresetUpdaterDefaults>();
 builder.Services.AddScoped<IPropertyMapper, PropertyMapper>();
 builder.Services.AddScoped<ICabMapper, CabMapper>();
 builder.Services.AddScoped<IPresetUpdater, PresetUpdater>();

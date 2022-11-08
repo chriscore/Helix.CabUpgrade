@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Helix.CabUpgrade.Utils
 {
-    public class CabMapConfiguration
+    public class CabInfo
     {
-        public Dictionary<string, string> _cabMap { get; set; } = new Dictionary<string, string>();
+        public string Name { get; set;  }
+        public string Id { get; set; }
     }
 }

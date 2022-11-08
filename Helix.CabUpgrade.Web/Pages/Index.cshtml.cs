@@ -36,7 +36,7 @@ namespace Helix.CabUpgrade.Web.Pages
             var json = await ReadFormFileAsync(Upload);
             _logger.LogInformation(json);
             
-            var result = _presetUpdater.UpdatePresetJson(json);
+            var result = _presetUpdater.UpdatePresetJson(json, new PresetUpdaterDefaults());
 
             byte[] bytes = Encoding.ASCII.GetBytes(result.PresetJson);
             return File(bytes, Upload.ContentType, $"{result.PatchName}.hlx");

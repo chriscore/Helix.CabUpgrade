@@ -2,6 +2,9 @@
 {
     public class Settings
     {
-        public Dictionary<string, string> CabMapping { get; set; } = new Dictionary<string, string>();
+        /// <summary>
+        /// A dictionary of legacy cab ID to new cabinfo
+        /// </summary>
+        public Dictionary<string, CabInfo> CabMapping { get; set; } = new Dictionary<string, CabInfo>();
     }
 }

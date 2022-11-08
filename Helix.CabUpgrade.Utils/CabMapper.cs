@@ -29,10 +29,10 @@ namespace Helix.CabUpgrade.Utils
                 newCabModel = overrideCabModel;
                 _logger.LogInformation($"Mapped {oldCabModel} -> {newCabModel} using override");
             }
-            else if (_settings.CabMapping.ContainsKey(oldCabModel))
+            else if (_settings.CabMapping.TryGetValue(oldCabModel, out var value))
             {
-                newCabModel = _settings.CabMapping[oldCabModel];
-                _logger.LogInformation($"Mapped {oldCabModel} -> {newCabModel}");
+                newCabModel = value.Id;
+                _logger.LogInformation($"Mapped {oldCabModel} -> {value.Name}");
             }
 
             if (newCabModel == null)
