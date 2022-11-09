@@ -48,7 +48,7 @@ namespace Helix.CabUpgrade.Utils.Tests
         }
 
         [Fact]
-        public void MapNewCabModel_MapsWhenLegacyCabMatched_WithOverride()
+        public void MapNewCabModel_MapsWhenLegacyCabMatched_WithoutForceOverride()
         {
             var settings = new Settings();
             settings.CabMapping.Add("HD2_Cab4x12XXLV30", new CabInfo { Id = "HD2_CabMicIr_4x12MOONT75", Name = "TestNewCab" });
@@ -58,12 +58,27 @@ namespace Helix.CabUpgrade.Utils.Tests
             var mockLog = new Mock<ILogger<CabMapper>>();
             var mapper = new CabMapper(mockLog.Object, mockOptions.Object);
 
-            var newCab = mapper.MapNewCabModel("HD2_Cab4x12XXLV30", "Kittens");
+            var newCab = mapper.MapNewCabModel("HD2_Cab4x12XXLV30", "Kittens", false);
+            Assert.Equal("HD2_CabMicIr_4x12MOONT75", newCab);
+        }
+
+        [Fact]
+        public void MapNewCabModel_MapsWhenLegacyCabMatched_WithForceOverride()
+        {
+            var settings = new Settings();
+            settings.CabMapping.Add("HD2_Cab4x12XXLV30", new CabInfo { Id = "HD2_CabMicIr_4x12MOONT75", Name = "TestNewCab" });
+            var mockOptions = new Mock<IOptionsSnapshot<Settings>>();
+            mockOptions.Setup(a => a.Value).Returns(settings);
+
+            var mockLog = new Mock<ILogger<CabMapper>>();
+            var mapper = new CabMapper(mockLog.Object, mockOptions.Object);
+
+            var newCab = mapper.MapNewCabModel("HD2_Cab4x12XXLV30", "Kittens", true);
             Assert.Equal("Kittens", newCab);
         }
 
         [Fact]
-        public void MapNewCabModel_MapsWhenLegacyCabNotMatched_WithOverride()
+        public void MapNewCabModel_MapsWhenLegacyCabNotMatched_WithoutForceOverride()
         {
             var settings = new Settings();
             settings.CabMapping.Add("HD2_Cab4x12XXLV30", new CabInfo { Id = "HD2_CabMicIr_4x12MOONT75", Name = "TestNewCab" });
@@ -74,6 +89,21 @@ namespace Helix.CabUpgrade.Utils.Tests
             var mapper = new CabMapper(mockLog.Object, mockOptions.Object);
 
             var newCab = mapper.MapNewCabModel("Dogs", "Kittens");
+            Assert.Equal("Kittens", newCab);
+        }
+
+        [Fact]
+        public void MapNewCabModel_MapsWhenLegacyCabNotMatched_WithForceOverride()
+        {
+            var settings = new Settings();
+            settings.CabMapping.Add("HD2_Cab4x12XXLV30", new CabInfo { Id = "HD2_CabMicIr_4x12MOONT75", Name = "TestNewCab" });
+            var mockOptions = new Mock<IOptionsSnapshot<Settings>>();
+            mockOptions.Setup(a => a.Value).Returns(settings);
+
+            var mockLog = new Mock<ILogger<CabMapper>>();
+            var mapper = new CabMapper(mockLog.Object, mockOptions.Object);
+
+            var newCab = mapper.MapNewCabModel("Dogs", "Kittens", true);
             Assert.Equal("Kittens", newCab);
         }
     }

@@ -19,7 +19,7 @@ namespace Helix.CabUpgrade.Utils
             _settings = options.Value;
         }
 
-        public virtual string MapNewCabModel(string oldCabModel, string? overrideCabModel, bool forceOverride)
+        public virtual string MapNewCabModel(string oldCabModel, string? overrideCabModel, bool forceOverride = false)
         {
             _logger.LogInformation($"Mapping legacy cab model: {oldCabModel}");
             string? newCabModel = null;
