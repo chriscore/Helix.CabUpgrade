@@ -91,10 +91,13 @@
             </table>
         </div>
         <br />
+        <div class="alert-warning" id="errorMsg">
+            @Html.DisplayTextFor(m => m.ErrorMessage)
+        </div>
         <div>
             <label for="file">Helix Preset to Update: </label>
             <input type="file" accept=".hlx" asp-for="Upload" />
-            <input type="submit" />
+            <input type="submit" onclick="clearError()" />
         </div>
     </form>
 </div>
