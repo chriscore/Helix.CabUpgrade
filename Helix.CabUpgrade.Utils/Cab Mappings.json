@@ -1,0 +1,112 @@
+{
+	"HD2_Cab1x10PrincessCopperhead": {
+	  "Name": "1x10 US Princess",
+	  "Id": "HD2_CabMicIr_1x10USPrincess",
+	  "DefaultMic": 11
+	},
+	"HD2_Cab1x12Grammatico5E3": {
+	  "Name": "1x12 Grammatico",
+	  "Id": "HD2_CabMicIr_1x12Grammatico",
+	  "DefaultMic": 11
+	},
+	"HD2_Cab1x12USDeluxe": {
+	  "Name": "1x12 US Deluxe",
+	  "Id": "HD2_CabMicIr_1x12USDeluxe",
+	  "DefaultMic": 0
+	},
+	"HD2_Cab1x12CaliExt": {
+	  "Name": "1x12 Cali Ext",
+	  "Id": "HD2_CabMicIr_1x12CaliEXT",
+	  "DefaultMic": 0
+	},
+	"HD2_Cab2x12BlueBell": {
+	  "Name": "2x12 Blue Bell",
+	  "Id": "HD2_CabMicIr_2x12BlueBell",
+	  "DefaultMic": 0
+	},
+	"HD2_Cab2x12DoubleC12N": {
+	  "Name": "2x12 Double C12N",
+	  "Id": "HD2_CabMicIr_2x12DoubleC12N",
+	  "DefaultMic": 0
+	},
+	"HD2_Cab2x12JazzRivet": {
+	  "Name": "2x12 Jazz Rivet",
+	  "Id": "HD2_CabMicIr_2x12JazzRivet",
+	  "DefaultMic": 0
+	},
+	"HD2_Cab2x12MailC12Q": {
+	  "Name": "2x12 Mail C12Q",
+	  "Id": "HD2_CabMicIr_2x12MailC12Q",
+	  "DefaultMic": 0
+	},
+	"Missing_Mandarin30": {
+	  "Name": "2x12 Mandarin 30",
+	  "Id": "HD2_CabMicIr_2x12Mandarin",
+	  "DefaultMic": 11
+	},
+	"HD2_Cab4x10TweedP10R": {
+	  "Name": "4x10 Tweed P10R",
+	  "Id": "HD2_CabMicIr_4x10TweedP10R",
+	  "DefaultMic": 2
+	},
+	"HD2_Cab4x12Greenback25": {
+	  "Name": "4x12 Greenback 25",
+	  "Id": "HD2_CabMicIr_4x12Greenback25",
+	  "DefaultMic": 0
+	},
+	"HD2_Cab4x121960T75": {
+	  "Name": "4x12 1960A T75",
+	  "Id": "HD2_CabMicIr_4x121960AT75",
+	  "DefaultMic": 0
+	},
+	"HD2_Cab4x12Blackback30": {
+	  "Name": "4x12 Blackback 30",
+	  "Id": "HD2_CabMicIr_4x12BlackbackH30",
+	  "DefaultMic": 3
+	},
+	"Missing_BritV30": {
+	  "Name": "4x12 Brit V30",
+	  "Id": "HD2_CabMicIr_4x12BritV30",
+	  "DefaultMic": 2
+	},
+	"HD2_Cab4X12CaliV30": {
+	  "Name": "4x12 Cali V30",
+	  "Id": "HD2_CabMicIr_4x12CaliV30",
+	  "DefaultMic": 10
+	},
+	"HD2_Cab4x12MandarinEM": {
+	  "Name": "4x12 Mandarin EM",
+	  "Id": "HD2_CabMicIr_4x12Mandarin",
+	  "DefaultMic": 6
+	},
+	"Missing_MOO)))NT75": {
+	  "Name": "4x12 MOO)))N T75",
+	  "Id": "HD2_CabMicIr_4x12MOONT75",
+	  "DefaultMic": 3
+	},
+	"HD2_Cab4x12UberT75": {
+	  "Name": "4x12 Uber T75",
+	  "Id": "HD2_CabMicIr_4x12UberT75",
+	  "DefaultMic": 0
+	},
+	"HD2_Cab4x12UberV30": {
+	  "Name": "4x12 Uber V30",
+	  "Id": "HD2_CabMicIr_4x12UberV30",
+	  "DefaultMic": 10
+	},
+	"HD2_Cab4x12XXLV30": {
+	  "Name": "4x12 XXL V30",
+	  "Id": "HD2_CabMicIr_4x12XXLV30",
+	  "DefaultMic": 6
+	},
+	"HD2_Cab1x15TucknGo": {
+	  "Name": "1x15 Ampeg B-15",
+	  "Id": "HD2_CabMicIr_1x15AmpegB15",
+	  "DefaultMic": 10
+	},
+	"HD2_Cab2x15Brute": {
+	  "Name": "2x15 Brute",
+	  "Id": "HD2_CabMicIr_2x15Brute",
+	  "DefaultMic": 6
+	}
+}

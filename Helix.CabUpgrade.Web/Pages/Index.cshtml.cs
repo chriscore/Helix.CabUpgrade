@@ -2,10 +2,7 @@
 using Helix.CabUpgrade.Utils.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.Options;
-using System.Reflection.Metadata;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace Helix.CabUpgrade.Web.Pages
@@ -14,13 +11,17 @@ namespace Helix.CabUpgrade.Web.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         private readonly IPresetUpdater _presetUpdater;
-        private readonly Settings _settings;
+        public readonly Settings _settings;
+
+        public static NewCabRepository NewCabRepository { get; set; }
+        
 
         public IndexModel(ILogger<IndexModel> logger, IPresetUpdater updater, IOptionsSnapshot<Settings> options)
         {
             _logger = logger;
             _presetUpdater = updater;
             _settings = options.Value;
+            NewCabRepository = new NewCabRepository(_settings);
         }
 
         public void OnGet()
@@ -29,26 +30,41 @@ namespace Helix.CabUpgrade.Web.Pages
         [BindProperty]
         public IFormFile Upload { get; set; }
         [BindProperty]
-        public string PrimaryCabOverride { get; set; }
+        public string SelectedPrimaryCab { get; set; }
         [BindProperty]
-        public string SecondaryCabOverride { get; set; }
+        public string SelectedSecondaryCab { get; set; }
+        [BindProperty]
+        public bool ForceOverridePrimaryCab { get; set; }
+        [BindProperty]
+        public bool ForceOverrideSecondaryCab { get; set; }
+
         public async Task<ActionResult> OnPostAsync()
         {
             try
             {
                 var json = await ReadFormFileAsync(Upload);
-                _logger.LogInformation(json);
+                _logger.LogInformation($"Received preset upload: {json}");
 
-                var result = _presetUpdater.UpdatePresetJson(json, new PresetUpdaterDefaults());
+                var defaults = new PresetUpdaterDefaults()
+                {
+                    CabModelPrimaryOverride = SelectedPrimaryCab,
+                    CabModelSecondaryOrAmpCabOverride = SelectedSecondaryCab,
+                    ForceOverridePrimaryCab = ForceOverridePrimaryCab,
+                    ForceOverrideSecondaryCab = ForceOverrideSecondaryCab
+                };
+                var result = _presetUpdater.UpdatePresetJson(json, defaults);
 
                 byte[] bytes = Encoding.ASCII.GetBytes(result.PresetJson);
                 return File(bytes, Upload.ContentType, $"{result.PatchName}.hlx");
             }
             catch (Exception e)
             {
+                return BadRequest(e);
+                /*
                 _logger.LogError(e, "Error caught during user preset upgrade");
                 Response.StatusCode = 400;
                 return Content(e.Message);
+                */
             }
         }
 

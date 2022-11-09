@@ -94,7 +94,7 @@ namespace Helix.CabUpgrade.Utils
                     if (blockType == null) // secondary cabs and amp&cab block cabs will come in here
                     {
                         _logger.LogInformation($"upgrading attached cab block: {block.Name}");
-                        UpgradeLegacyCab(props, defaults.CabModelSecondaryOrAmpCabOverride, block.Name.StartsWith("cab"), defaults); // last arg always true?
+                        UpgradeLegacyCab(props, defaults.CabModelSecondaryOrAmpCabOverride, defaults.ForceOverrideSecondaryCab, block.Name.StartsWith("cab"), defaults);
 
                         json["data"]["tone"][dsp][blockName] = new JObject(props);
                     }
@@ -102,7 +102,7 @@ namespace Helix.CabUpgrade.Utils
                     {
                         _logger.LogInformation($"upgrading legacy single cab block: {block.Name}");
 
-                        UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, block.Name.StartsWith("cab"), defaults); // last arg always false?
+                        UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, block.Name.StartsWith("cab"), defaults);
 
                         json["data"]["tone"][dsp][blockName] = new JObject(props);
                     }
@@ -110,7 +110,7 @@ namespace Helix.CabUpgrade.Utils
                     {
                         _logger.LogInformation($"upgrading legacy dual cab block: {block.Name}");
 
-                        UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, block.Name.StartsWith("cab"), defaults); // last arg always false?
+                        UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, block.Name.StartsWith("cab"), defaults);
 
                         json["data"]["tone"][dsp][blockName] = new JObject(props); // TODO: need to test dual cabs
                     }
@@ -122,7 +122,7 @@ namespace Helix.CabUpgrade.Utils
             }
         }
         
-        internal void UpgradeLegacyCab(List<JProperty> cabProperties, string? overrideCabModel, bool isSecondaryDualCab, PresetUpdaterDefaults defaults)
+        internal void UpgradeLegacyCab(List<JProperty> cabProperties, string? overrideCabModel, bool forceOverride, bool isSecondaryDualCab, PresetUpdaterDefaults defaults)
         {
             /* 
             Properties which do not change:
@@ -140,7 +140,8 @@ namespace Helix.CabUpgrade.Utils
             */
 
             var oldCabModel = cabProperties.SingleOrDefault(a => a.Name.Equals("@model")).Value.ToString();
-            var newModel = _cabMapper.MapNewCabModel(oldCabModel, overrideCabModel);
+            var newModel = _cabMapper.MapNewCabModel(oldCabModel, overrideCabModel, forceOverride);
+
             _propertyMapper.UpdateBlockPropertyValue(cabProperties, "@model", "@model", newModel);
 
             UpdateMicProperty(cabProperties);

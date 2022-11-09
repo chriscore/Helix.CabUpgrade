@@ -2,6 +2,6 @@
 {
     public interface ICabMapper
     {
-        string MapNewCabModel(string oldCabModel, string? overrideCabModel);
+        string MapNewCabModel(string oldCabModel, string? overrideCabModel, bool forceOverride);
     }
 }

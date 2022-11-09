@@ -6,8 +6,6 @@ using Helix.CabUpgrade.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var cabConfig = new Dictionary<string, string>();
-
 // Add Azure App Configuration to the container.
 var azAppConfigConnection = builder.Configuration["AppConfig"];
 if (!string.IsNullOrEmpty(azAppConfigConnection))

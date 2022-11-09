@@ -12,5 +12,7 @@ namespace Helix.CabUpgrade.Utils
         public double Position { get; set; } = 0.390;
         public string? CabModelPrimaryOverride { get; set; } = null;
         public string? CabModelSecondaryOrAmpCabOverride { get; set; } = null;
+        public bool ForceOverridePrimaryCab { get; set; }
+        public bool ForceOverrideSecondaryCab { get; set; }
     }
 }
