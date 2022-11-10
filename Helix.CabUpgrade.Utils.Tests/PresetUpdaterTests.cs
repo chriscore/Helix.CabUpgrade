@@ -36,9 +36,10 @@ namespace Helix.CabUpgrade.Utils.Tests
 
             var propertyMapper = new PropertyMapper(mockPropertyMapper.Object);
             var updater = new PresetUpdater(mockPresetUpdaterLog.Object, CreateCabMapper(), propertyMapper, mockMicMapper.Object);
-
             string testCase = Resources.Legacy_Single_Cab;
-            var transformedCab = JToken.Parse(updater.UpdatePresetJson(testCase, defaults).PresetJson).SelectToken("$.data.tone.dsp0.block0");
+
+            string presetJson = updater.UpdatePresetJson(testCase, defaults).PresetJson;
+            var transformedCab = JToken.Parse(presetJson).SelectToken("$.data.tone.dsp0.block0");
 
             Assert.Equal(true, transformedCab["@enabled"].ToObject<bool>());
             Assert.Equal(2.0, transformedCab["Distance"].ToObject<float>());
@@ -49,6 +50,8 @@ namespace Helix.CabUpgrade.Utils.Tests
             Assert.Equal(0, transformedCab["Mic"].ToObject<int>());
             Assert.Equal(45.0, transformedCab["Angle"].ToObject<float>());
             Assert.Equal(0.39, transformedCab["Position"].ToObject<float>(), 2);
+
+            Assert.Equal(Resources.Legacy_Single_Cab_Expected_Result, presetJson);
         }
 
         [Fact]

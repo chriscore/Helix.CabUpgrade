@@ -55,22 +55,7 @@ namespace Helix.CabUpgrade.Utils
             UpdateCabsForDspNode(json, "dsp0", defaults);
             UpdateCabsForDspNode(json, "dsp1", defaults);
 
-            // todo: reproduce the way helix hlx files are serialised..
-            // maybe this is important, maybe not
-            // this isnt right yet.
-            var sb = new StringBuilder();
-            using (StringWriter sw = new StringWriter(sb))
-            using (var jtw = new JsonTextWriter(sw)
-            {
-                Formatting = Formatting.Indented,
-                Indentation = 1,
-                IndentChar = ' '
-            })
-            {
-                (new JsonSerializer()).Serialize(jtw, json);
-            }
-
-            var result = new UpdatePresetJsonResponse(sb.ToString(), patchName);
+            var result = new UpdatePresetJsonResponse(json.ToString(), patchName);
             _logger.LogInformation("Finished preset conversion");
             return result;
         }
@@ -97,19 +82,9 @@ namespace Helix.CabUpgrade.Utils
                     if (props.Any(b => b.Name.Equals("@model")
                                     && b.Value.ToString().StartsWith(LegacyCabIdentifier)
                                     && !b.Value.ToString().StartsWith(NewCabIdentifier)
-                        // TODO: exclude blocks which have an @cab property?
-                        ) && !block.Name.StartsWith("cab"))
+                                  ) 
+                        && !block.Name.StartsWith("cab"))
                     {
-
-                        /*
-                         * if (blockType == null) // secondary cabs and amp&cab block cabs will come in here
-                        {
-                            _logger.LogInformation($"upgrading attached secondary cab block: {block.Name}");
-                            UpgradeLegacyCab(props, defaults.CabModelSecondaryOrAmpCabOverride, defaults.ForceOverrideSecondaryCab, defaults);
-
-                            json["data"]["tone"][dsp][blockName] = new JObject(props);
-                        }
-                        */
                         if (blockType.Equals(new JValue(SingleCabBlockType)))
                         {
                             _logger.LogInformation($"Upgrading legacy single cab block: {block.Name}");
@@ -198,6 +173,7 @@ namespace Helix.CabUpgrade.Utils
             var oldCabModel = cabProperties.SingleOrDefault(a => a.Name.Equals("@model")).Value.ToString();
             var newModel = _cabMapper.MapNewCabModel(oldCabModel, overrideCabModel, forceOverride);
 
+            // Cabs from Dual cab blocks have a pan parameter. Cabs from Amp and cab blocks don't.
             if (withPan)
             {
                 newModel += "WithPan";
