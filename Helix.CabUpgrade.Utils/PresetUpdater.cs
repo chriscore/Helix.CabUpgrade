@@ -35,6 +35,7 @@ namespace Helix.CabUpgrade.Utils
         /// <returns></returns>
         public UpdatePresetJsonResponse UpdatePresetJson(string presetContent, PresetUpdaterDefaults defaults)
         {
+            _logger.LogInformation($"Starting UpdatePresetJson with defaults: {JsonConvert.SerializeObject(defaults)} and patch data: {presetContent}");
             var json = JObject.Parse(presetContent);
 
             var version = json["version"].ToObject<int>();
@@ -69,6 +70,7 @@ namespace Helix.CabUpgrade.Utils
             }
 
             var result = new UpdatePresetJsonResponse(sb.ToString(), patchName);
+            _logger.LogInformation("Finished preset conversion");
             return result;
         }
 
@@ -93,7 +95,7 @@ namespace Helix.CabUpgrade.Utils
                     var blockType = block.Value["@type"];
                     if (blockType == null) // secondary cabs and amp&cab block cabs will come in here
                     {
-                        _logger.LogInformation($"upgrading attached cab block: {block.Name}");
+                        _logger.LogInformation($"upgrading attached secondary cab block: {block.Name}");
                         UpgradeLegacyCab(props, defaults.CabModelSecondaryOrAmpCabOverride, defaults.ForceOverrideSecondaryCab, block.Name.StartsWith("cab"), defaults);
 
                         json["data"]["tone"][dsp][blockName] = new JObject(props);
@@ -129,7 +131,7 @@ namespace Helix.CabUpgrade.Utils
             @enabled, @no_snapshot_bypass, @path, @position, Distance, HighCut, Level, LowCut
 
             Special case for dual cab: @cab, Delay (does not appear on the secondary), Pan (appears on primary & secondary)
-            TODO: implement migration path for Delay and Pan
+            TODO: implement migration path for Delay and Pan (dual cab blocks)
 
             Properties with a different key:
             @mic -> Mic

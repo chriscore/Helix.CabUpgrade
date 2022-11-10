@@ -70,6 +70,9 @@ namespace Helix.CabUpgrade.Web.Pages
                 byte[] bytes = Encoding.ASCII.GetBytes(result.PresetJson);
                 ErrorMessage = "";
                 IsError = false;
+
+                _logger.LogInformation("Returning completed file to user");
+
                 return File(bytes, Upload.ContentType, $"{result.PatchName}.hlx");
             }
             catch (Exception e)
