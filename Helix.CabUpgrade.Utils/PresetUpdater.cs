@@ -17,6 +17,7 @@ namespace Helix.CabUpgrade.Utils
         private const string LegacyCabIdentifier = "HD2_Cab";
         private const string NewCabIdentifier = "HD2_CabMicIr";
         private const int SingleCabBlockType = 2;
+        private const int AmpAndCabBlockType = 3;
         private const int DualCabBlockType = 4;
 
         public PresetUpdater(ILogger<PresetUpdater> logger, ICabMapper cabMapper, IPropertyMapper propertyMapper, IMicMapper micMapper)
@@ -82,39 +83,62 @@ namespace Helix.CabUpgrade.Utils
                 var blockName = block.Name;
                 var props = block.Children().Children().OfType<JProperty>().ToList();
 
+                // find 'main' blocks containing legacy cabs only.
+                // Blocks with a @model property starting with Legacy Cab Identifier patern
+                // Exclude 'secondary' referenced cabs, we will deal with them later.
                 if (props.Any(b => b.Name.Equals("@model")
                                 && b.Value.ToString().StartsWith(LegacyCabIdentifier)
                                 && !b.Value.ToString().StartsWith(NewCabIdentifier)
-                    )) // find legacy cabs only
+                                // TODO: exclude blocks which have an @cab property?
+                    ) && !block.Name.StartsWith("cab")) 
                 {
-                    // @type property:	
-                    // legacy single cab: 2, new single cab: 2, 
-                    // amp & cab = 3
-                    // legacy dual cab: 4, new dual cab: 4
-
                     var blockType = block.Value["@type"];
-                    if (blockType == null) // secondary cabs and amp&cab block cabs will come in here
+                    /*
+                     * if (blockType == null) // secondary cabs and amp&cab block cabs will come in here
                     {
                         _logger.LogInformation($"upgrading attached secondary cab block: {block.Name}");
-                        UpgradeLegacyCab(props, defaults.CabModelSecondaryOrAmpCabOverride, defaults.ForceOverrideSecondaryCab, block.Name.StartsWith("cab"), defaults);
+                        UpgradeLegacyCab(props, defaults.CabModelSecondaryOrAmpCabOverride, defaults.ForceOverrideSecondaryCab, defaults);
 
                         json["data"]["tone"][dsp][blockName] = new JObject(props);
                     }
-                    else if (blockType.Equals(new JValue(SingleCabBlockType)))
+                    */
+                    if (blockType.Equals(new JValue(SingleCabBlockType)))
                     {
-                        _logger.LogInformation($"upgrading legacy single cab block: {block.Name}");
+                        _logger.LogInformation($"Upgrading legacy single cab block: {block.Name}");
 
-                        UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, block.Name.StartsWith("cab"), defaults);
+                        UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, defaults, false);
 
                         json["data"]["tone"][dsp][blockName] = new JObject(props);
                     }
                     else if (blockType.Equals(new JValue(DualCabBlockType)))
                     {
-                        _logger.LogInformation($"upgrading legacy dual cab block: {block.Name}");
+                        _logger.LogInformation($"Upgrading legacy dual cab block: {block.Name}");
 
-                        UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, block.Name.StartsWith("cab"), defaults);
+                        UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, defaults, true);
+                        props.Add(new JProperty("Pan", defaults.Pan));
+                        props.Add(new JProperty("Delay", defaults.Delay));
 
-                        json["data"]["tone"][dsp][blockName] = new JObject(props); // TODO: need to test dual cabs
+                        // write the main dual cab block properties to the document
+                        json["data"]["tone"][dsp][blockName] = new JObject(props);
+
+
+                        // Now update the linked cab block
+                        var linkedCabBlockName = block.Value["@cab"].ToString();
+                        if (linkedCabBlockName == null)
+                        {
+                            _logger.LogWarning($"No @cab property found on Dual block type with name {blockName}: {json}");
+                            continue;
+                        }
+
+                        var cabProperties = json["data"]["tone"][dsp][linkedCabBlockName].Children().OfType<JProperty>().ToList();                        
+                        UpgradeLinkedCab(cabProperties, defaults);
+                        // write the secondary dual cab block properties to the document
+                        json["data"]["tone"][dsp][linkedCabBlockName] = new JObject(props);
+                    }
+                    else if (blockType.Equals(new JValue(AmpAndCabBlockType)))
+                    {
+                        // TODO: implement for amp and cab
+                        throw new NotImplementedException("Migration of Amp and Cab blocks are not yet supported - working on it, check back tomorrow!");
                     }
                     else
                     {
@@ -123,8 +147,24 @@ namespace Helix.CabUpgrade.Utils
                 }
             }
         }
-        
-        internal void UpgradeLegacyCab(List<JProperty> cabProperties, string? overrideCabModel, bool forceOverride, bool isSecondaryDualCab, PresetUpdaterDefaults defaults)
+
+        private void UpgradeLinkedCab(List<JProperty> cabProperties, PresetUpdaterDefaults defaults)
+        {
+            UpgradeLegacyCab(cabProperties, defaults.CabModelSecondaryOrAmpCabOverride, defaults.ForceOverrideSecondaryCab, defaults, true);
+
+            // Delay
+            cabProperties.Add(new JProperty("Delay", defaults.Delay));
+
+            // Map mic, and change @mic to Mic
+            UpdateMicProperty(cabProperties);
+
+            // Pan
+            cabProperties.Add(new JProperty("Pan", defaults.Pan));
+
+            // TODO: implement for Amp and Cab block?
+        }
+
+        internal void UpgradeLegacyCab(List<JProperty> cabProperties, string? overrideCabModel, bool forceOverride, PresetUpdaterDefaults defaults, bool withPan)
         {
             /* 
             Properties which do not change:
@@ -144,6 +184,11 @@ namespace Helix.CabUpgrade.Utils
             var oldCabModel = cabProperties.SingleOrDefault(a => a.Name.Equals("@model")).Value.ToString();
             var newModel = _cabMapper.MapNewCabModel(oldCabModel, overrideCabModel, forceOverride);
 
+            if (withPan)
+            {
+                newModel += "WithPan";
+            }
+
             _propertyMapper.UpdateBlockPropertyValue(cabProperties, "@model", "@model", newModel);
 
             UpdateMicProperty(cabProperties);
@@ -152,8 +197,8 @@ namespace Helix.CabUpgrade.Utils
             cabProperties.Add(new JProperty("Angle", defaults.Angle));
             cabProperties.Add(new JProperty("Position", defaults.Position));
 
-            // try to remove early reflections
-            bool success = cabProperties.Remove(cabProperties.SingleOrDefault(a => a.Name.Equals("EarlyReflections")));
+            // Try to remove early reflections
+            cabProperties.Remove(cabProperties.SingleOrDefault(a => a.Name.Equals("EarlyReflections")));
         }
 
         internal void UpdateMicProperty(List<JProperty> cabProperties, NewMic defaultIfUnmappable = NewMic._57_Dynamic)

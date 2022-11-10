@@ -222,10 +222,10 @@ namespace Helix.CabUpgrade.Utils.Tests.Properties {
         ///  &quot;device_version&quot; : 55574528,
         ///  &quot;meta&quot; : {
         ///   &quot;application&quot; : &quot;HX Edit&quot;,
-        ///   &quot;appversion&quot; : 55083877,
+        ///   &quot;appversion&quot; : 55574528,
         ///   &quot;build_sha&quot; : &quot;ec7605f&quot;,
-        ///   &quot;modifieddate&quot; : 1667773712,
-        ///   &quot;name&quot; : &quot;Legacy Dua Cab&quot;
+        ///   &quot;modifieddate&quot; : 1668095700,
+        ///   &quot;name&quot; : &quot;Legacy Dual Cab&quot;
         ///  },
         ///  &quot;tone&quot; : {
         ///   &quot;dsp0&quot; : {
@@ -236,9 +236,10 @@ namespace Helix.CabUpgrade.Utils.Tests.Properties {
         ///     &quot;@model&quot; : &quot;HD2_Cab2x12MailC12Q&quot;,
         ///     &quot;@no_snapshot_bypass&quot; : false,
         ///     &quot;@path&quot; : 0,
-        ///     &quot;@position&quot; : 0,
+        ///     &quot;@position&quot; : 2,
         ///     &quot;@type&quot; : 4,
-        ///     &quot;Distance&quot; :  [rest of string was truncated]&quot;;.
+        ///     &quot;Distance&quot; : 2.50,
+        ///     &quot;EarlyRefl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Legacy_Dual_Cab {
             get {
@@ -305,6 +306,36 @@ namespace Helix.CabUpgrade.Utils.Tests.Properties {
         internal static string Legacy_Single_Cab_Path_B {
             get {
                 return ResourceManager.GetString("Legacy Single Cab Path B", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///	&quot;HD2_Cab1x10PrincessCopperhead&quot;: {
+        ///	  &quot;Name&quot;: &quot;1x10 US Princess&quot;,
+        ///	  &quot;Id&quot;: &quot;HD2_CabMicIr_1x10USPrincess&quot;,
+        ///	  &quot;DefaultMic&quot;: 11
+        ///	},
+        ///	&quot;HD2_Cab1x12Grammatico5E3&quot;: {
+        ///	  &quot;Name&quot;: &quot;1x12 Grammatico&quot;,
+        ///	  &quot;Id&quot;: &quot;HD2_CabMicIr_1x12Grammatico&quot;,
+        ///	  &quot;DefaultMic&quot;: 11
+        ///	},
+        ///	&quot;HD2_Cab1x12USDeluxe&quot;: {
+        ///	  &quot;Name&quot;: &quot;1x12 US Deluxe&quot;,
+        ///	  &quot;Id&quot;: &quot;HD2_CabMicIr_1x12USDeluxe&quot;,
+        ///	  &quot;DefaultMic&quot;: 0
+        ///	},
+        ///	&quot;HD2_Cab1x12CaliExt&quot;: {
+        ///	  &quot;Name&quot;: &quot;1x12 Cali Ext&quot;,
+        ///	  &quot;Id&quot;: &quot;HD2_CabMicIr_1x12CaliEXT&quot;,
+        ///	  &quot;DefaultMic&quot;: 0
+        ///	},
+        ///	&quot;HD [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         
