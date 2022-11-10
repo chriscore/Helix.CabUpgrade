@@ -191,10 +191,10 @@ namespace Helix.CabUpgrade.Utils.Tests.Properties {
         ///  &quot;device_version&quot; : 55574528,
         ///  &quot;meta&quot; : {
         ///   &quot;application&quot; : &quot;HX Edit&quot;,
-        ///   &quot;appversion&quot; : 55083877,
+        ///   &quot;appversion&quot; : 55574528,
         ///   &quot;build_sha&quot; : &quot;ec7605f&quot;,
-        ///   &quot;modifieddate&quot; : 1667773712,
-        ///   &quot;name&quot; : &quot;Legacy Amp n Cab&quot;
+        ///   &quot;modifieddate&quot; : 1668108367,
+        ///   &quot;name&quot; : &quot;Legacy A&amp;C&quot;
         ///  },
         ///  &quot;tone&quot; : {
         ///   &quot;dsp0&quot; : {
@@ -202,12 +202,13 @@ namespace Helix.CabUpgrade.Utils.Tests.Properties {
         ///     &quot;@bypassvolume&quot; : 1.0,
         ///     &quot;@cab&quot; : &quot;cab0&quot;,
         ///     &quot;@enabled&quot; : true,
-        ///     &quot;@model&quot; : &quot;HD2_AmpMoonJump&quot;,
+        ///     &quot;@model&quot; : &quot;HD2_AmpJazzRivet120&quot;,
         ///     &quot;@no_snapshot_bypass&quot; : false,
         ///     &quot;@path&quot; : 0,
-        ///     &quot;@position&quot; : 0,
+        ///     &quot;@position&quot; : 2,
         ///     &quot;@type&quot; : 3,
-        ///     &quot;Bas [rest of string was truncated]&quot;;.
+        ///     &quot;Bass&quot; : 0.560,
+        ///     &quot;Bright [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Legacy_Amp_and_Cab {
             get {

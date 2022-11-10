@@ -1658,10 +1658,10 @@
   "device_version" : 55574528,
   "meta" : {
    "application" : "HX Edit",
-   "appversion" : 55083877,
+   "appversion" : 55574528,
    "build_sha" : "ec7605f",
-   "modifieddate" : 1667773712,
-   "name" : "Legacy Amp n Cab"
+   "modifieddate" : 1668108367,
+   "name" : "Legacy A&amp;C"
   },
   "tone" : {
    "dsp0" : {
@@ -1669,30 +1669,25 @@
      "@bypassvolume" : 1.0,
      "@cab" : "cab0",
      "@enabled" : true,
-     "@model" : "HD2_AmpMoonJump",
+     "@model" : "HD2_AmpJazzRivet120",
      "@no_snapshot_bypass" : false,
      "@path" : 0,
-     "@position" : 0,
+     "@position" : 2,
      "@type" : 3,
-     "Bass" : 0.40,
-     "Bias" : 0.50,
-     "BiasX" : 0.50,
-     "BrtDrive" : 0.450,
-     "ChVol" : 0.70,
-     "Hum" : 0.50,
-     "Master" : 0.80,
-     "Mid" : 0.350,
-     "NrmDrive" : 0.30,
-     "Presence" : 0.50,
-     "Ripple" : 0.50,
-     "Sag" : 0.50,
-     "Treble" : 0.540
+     "Bass" : 0.560,
+     "Bright" : 0.0,
+     "ChVol" : 0.750,
+     "Drive" : 0.280,
+     "Master" : 1.0,
+     "Mid" : 0.270,
+     "Presence" : 0.30,
+     "Treble" : 0.470
     },
     "cab0" : {
      "@enabled" : true,
      "@mic" : 6,
-     "@model" : "HD2_Cab4X12CaliV30",
-     "Distance" : 3.0,
+     "@model" : "HD2_Cab2x12JazzRivet",
+     "Distance" : 1.0,
      "EarlyReflections" : 0.0,
      "HighCut" : 8000.0,
      "Level" : 0.0,
@@ -1836,11 +1831,11 @@
     "@PowercabMode" : 0,
     "@PowercabSelect" : 2,
     "@PowercabVoicing" : 0,
-    "@current_snapshot" : 0,
+    "@current_snapshot" : 1,
     "@cursor_dsp" : 0,
     "@cursor_group" : "block0",
     "@cursor_path" : 0,
-    "@cursor_position" : 0,
+    "@cursor_position" : 2,
     "@guitarinputZ" : 0,
     "@guitarpad" : 0,
     "@model" : "@global_params",
@@ -1907,7 +1902,7 @@
     "@name" : "SNAPSHOT 2",
     "@pedalstate" : 2,
     "@tempo" : 120.0,
-    "@valid" : false,
+    "@valid" : true,
     "blocks" : {
      "dsp0" : {
       "block0" : true
@@ -1920,7 +1915,7 @@
     "@name" : "SNAPSHOT 3",
     "@pedalstate" : 2,
     "@tempo" : 120.0,
-    "@valid" : false,
+    "@valid" : true,
     "blocks" : {
      "dsp0" : {
       "block0" : true
@@ -1933,7 +1928,7 @@
     "@name" : "SNAPSHOT 4",
     "@pedalstate" : 2,
     "@tempo" : 120.0,
-    "@valid" : false,
+    "@valid" : true,
     "blocks" : {
      "dsp0" : {
       "block0" : true
@@ -1946,7 +1941,7 @@
     "@name" : "SNAPSHOT 5",
     "@pedalstate" : 2,
     "@tempo" : 120.0,
-    "@valid" : false,
+    "@valid" : true,
     "blocks" : {
      "dsp0" : {
       "block0" : true
@@ -1959,7 +1954,7 @@
     "@name" : "SNAPSHOT 6",
     "@pedalstate" : 2,
     "@tempo" : 120.0,
-    "@valid" : false,
+    "@valid" : true,
     "blocks" : {
      "dsp0" : {
       "block0" : true
@@ -1972,7 +1967,7 @@
     "@name" : "SNAPSHOT 7",
     "@pedalstate" : 2,
     "@tempo" : 120.0,
-    "@valid" : false,
+    "@valid" : true,
     "blocks" : {
      "dsp0" : {
       "block0" : true
@@ -1985,7 +1980,7 @@
     "@name" : "SNAPSHOT 8",
     "@pedalstate" : 2,
     "@tempo" : 120.0,
-    "@valid" : false,
+    "@valid" : true,
     "blocks" : {
      "dsp0" : {
       "block0" : true

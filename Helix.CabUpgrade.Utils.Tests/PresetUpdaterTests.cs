@@ -11,6 +11,16 @@ namespace Helix.CabUpgrade.Utils.Tests
 {
     public class PresetUpdaterTests
     {
+        private static CabMapper CreateCabMapper()
+        {
+            var mockCabLogger = new Mock<ILogger<CabMapper>>();
+            var settings = Settings.FromString(Resources.Settings);
+            var mockOptions = new Mock<IOptionsSnapshot<Settings>>();
+            mockOptions.Setup(a => a.Value).Returns(settings);
+
+            var cabMapper = new CabMapper(mockCabLogger.Object, mockOptions.Object);
+            return cabMapper;
+        }
 
         [Fact]
         public void UpdatePresetJson_SimpleLegacySingleCab_dsp0()
@@ -22,16 +32,10 @@ namespace Helix.CabUpgrade.Utils.Tests
                 .Setup(a => a.MapMic(It.IsAny<int>(), It.IsAny<NewMic>()))
                 .Returns(() => 0);
 
-            var mockCabMapper = new Mock<ICabMapper>();
-            mockCabMapper
-                .Setup(a => a.MapNewCabModel(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<bool>()))
-                .Returns(() => "Mocked Mapped Cab");
-
-
             var defaults = new PresetUpdaterDefaults();
 
             var propertyMapper = new PropertyMapper(mockPropertyMapper.Object);
-            var updater = new PresetUpdater(mockPresetUpdaterLog.Object, mockCabMapper.Object, propertyMapper, mockMicMapper.Object);
+            var updater = new PresetUpdater(mockPresetUpdaterLog.Object, CreateCabMapper(), propertyMapper, mockMicMapper.Object);
 
             string testCase = Resources.Legacy_Single_Cab;
             var transformedCab = JToken.Parse(updater.UpdatePresetJson(testCase, defaults).PresetJson).SelectToken("$.data.tone.dsp0.block0");
@@ -41,7 +45,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             Assert.Equal(8000.0, transformedCab["HighCut"].ToObject<float>());
             Assert.Equal(0.0, transformedCab["Level"].ToObject<float>());
             Assert.Equal(80.0, transformedCab["LowCut"].ToObject<float>());
-            Assert.Equal("Mocked Mapped Cab", transformedCab["@model"].ToObject<string>());
+            Assert.Equal("HD2_CabMicIr_4x12XXLV30", transformedCab["@model"].ToObject<string>());
             Assert.Equal(0, transformedCab["Mic"].ToObject<int>());
             Assert.Equal(45.0, transformedCab["Angle"].ToObject<float>());
             Assert.Equal(0.39, transformedCab["Position"].ToObject<float>(), 2);
@@ -57,15 +61,10 @@ namespace Helix.CabUpgrade.Utils.Tests
                 .Setup(a => a.MapMic(It.IsAny<int>(), It.IsAny<NewMic>()))
                 .Returns(() => 0);
 
-            var mockCabMapper = new Mock<ICabMapper>();
-            mockCabMapper
-                .Setup(a => a.MapNewCabModel(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<bool>()))
-                .Returns(() => "Mocked Mapped Cab");
-
             var defaults = new PresetUpdaterDefaults();
 
             var propertyMapper = new PropertyMapper(mockPropertyMapper.Object);
-            var updater = new PresetUpdater(mockPresetUpdaterLog.Object, mockCabMapper.Object, propertyMapper, mockMicMapper.Object);
+            var updater = new PresetUpdater(mockPresetUpdaterLog.Object, CreateCabMapper(), propertyMapper, mockMicMapper.Object);
 
             string testCase = Resources.Legacy_Single_Cab_Path_B;
             var transformedCab = JToken.Parse(updater.UpdatePresetJson(testCase, defaults).PresetJson).SelectToken("$.data.tone.dsp1.block0");
@@ -75,7 +74,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             Assert.Equal(8000.0, transformedCab["HighCut"].ToObject<float>());
             Assert.Equal(0.0, transformedCab["Level"].ToObject<float>());
             Assert.Equal(80.0, transformedCab["LowCut"].ToObject<float>());
-            Assert.Equal("Mocked Mapped Cab", transformedCab["@model"].ToObject<string>());
+            Assert.Equal("HD2_CabMicIr_4x12XXLV30", transformedCab["@model"].ToObject<string>());
             Assert.Equal(0, transformedCab["Mic"].ToObject<int>());
             Assert.Equal(45.0, transformedCab["Angle"].ToObject<float>());
             Assert.Equal(0.39, transformedCab["Position"].ToObject<float>(), 2);
@@ -91,26 +90,21 @@ namespace Helix.CabUpgrade.Utils.Tests
                 .Setup(a => a.MapMic(It.IsAny<int>(), It.IsAny<NewMic>()))
                 .Returns(() => 0);
 
-            var mockCabMapper = new Mock<ICabMapper>();
-            mockCabMapper
-                .Setup(a => a.MapNewCabModel(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<bool>()))
-                .Returns(() => "Mocked Mapped Cab");
-
             var defaults = new PresetUpdaterDefaults();
 
             var propertyMapper = new PropertyMapper(mockPropertyMapper.Object);
-            var updater = new PresetUpdater(mockPresetUpdaterLog.Object, mockCabMapper.Object, propertyMapper, mockMicMapper.Object);
+            var updater = new PresetUpdater(mockPresetUpdaterLog.Object, CreateCabMapper(), propertyMapper, mockMicMapper.Object);
 
             string testCase = Resources.Legacy_Amp_and_Cab;
             var result = updater.UpdatePresetJson(testCase, defaults);
             var transformedCab = JToken.Parse(result.PresetJson).SelectToken("$.data.tone.dsp0.cab0");
 
             Assert.Equal(true, transformedCab["@enabled"].ToObject<bool>());
-            Assert.Equal(3.0, transformedCab["Distance"].ToObject<float>());
+            Assert.Equal(1.0, transformedCab["Distance"].ToObject<float>());
             Assert.Equal(8000.0, transformedCab["HighCut"].ToObject<float>());
             Assert.Equal(0.0, transformedCab["Level"].ToObject<float>());
             Assert.Equal(80.0, transformedCab["LowCut"].ToObject<float>()); 
-            Assert.Equal("Mocked Mapped Cab", transformedCab["@model"].ToObject<string>());
+            Assert.Equal("HD2_CabMicIr_2x12JazzRivet", transformedCab["@model"].ToObject<string>());
             Assert.Equal(0, transformedCab["Mic"].ToObject<int>());
             Assert.Equal(45.0, transformedCab["Angle"].ToObject<float>());
             Assert.Equal(0.39, transformedCab["Position"].ToObject<float>(), 2);
@@ -126,16 +120,10 @@ namespace Helix.CabUpgrade.Utils.Tests
                 .Setup(a => a.MapMic(It.IsAny<int>(), It.IsAny<NewMic>()))
                 .Returns(() => 0);
 
-            var mockCabLogger = new Mock<ILogger<CabMapper>>();
-            var settings = Settings.FromString(Resources.Settings);
-            var mockOptions = new Mock<IOptionsSnapshot<Settings>>();
-            mockOptions.Setup(a => a.Value).Returns(settings);
-            var cabMapper = new CabMapper(mockCabLogger.Object, mockOptions.Object);
-            
             var defaults = new PresetUpdaterDefaults();
 
             var propertyMapper = new PropertyMapper(mockPropertyMapper.Object);
-            var updater = new PresetUpdater(mockPresetUpdaterLog.Object, cabMapper, propertyMapper, mockMicMapper.Object);
+            var updater = new PresetUpdater(mockPresetUpdaterLog.Object, CreateCabMapper(), propertyMapper, mockMicMapper.Object);
 
             string testCase = Resources.Legacy_Dual_Cab;
             var result = updater.UpdatePresetJson(testCase, defaults);

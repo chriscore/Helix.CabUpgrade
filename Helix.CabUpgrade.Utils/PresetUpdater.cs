@@ -81,87 +81,101 @@ namespace Helix.CabUpgrade.Utils
             foreach (var block in dspxBlocks)
             {
                 var blockName = block.Name;
-                var props = block.Children().Children().OfType<JProperty>().ToList();
-
-                // find 'main' blocks containing legacy cabs only.
-                // Blocks with a @model property starting with Legacy Cab Identifier patern
-                // Exclude 'secondary' referenced cabs, we will deal with them later.
-                if (props.Any(b => b.Name.Equals("@model")
-                                && b.Value.ToString().StartsWith(LegacyCabIdentifier)
-                                && !b.Value.ToString().StartsWith(NewCabIdentifier)
-                                // TODO: exclude blocks which have an @cab property?
-                    ) && !block.Name.StartsWith("cab")) 
+                var blockType = block.Value["@type"];
+                if (blockType == null)
                 {
-                    var blockType = block.Value["@type"];
-                    /*
-                     * if (blockType == null) // secondary cabs and amp&cab block cabs will come in here
-                    {
-                        _logger.LogInformation($"upgrading attached secondary cab block: {block.Name}");
-                        UpgradeLegacyCab(props, defaults.CabModelSecondaryOrAmpCabOverride, defaults.ForceOverrideSecondaryCab, defaults);
+                    continue;
+                }
 
-                        json["data"]["tone"][dsp][blockName] = new JObject(props);
+                try
+                {
+                    var props = block.Children().Children().OfType<JProperty>().ToList();
+
+                    // find 'main' blocks containing legacy cabs only.
+                    // Blocks with a @model property starting with Legacy Cab Identifier patern
+                    // Exclude 'secondary' referenced cabs, we will deal with them later.
+                    if (props.Any(b => b.Name.Equals("@model")
+                                    && b.Value.ToString().StartsWith(LegacyCabIdentifier)
+                                    && !b.Value.ToString().StartsWith(NewCabIdentifier)
+                        // TODO: exclude blocks which have an @cab property?
+                        ) && !block.Name.StartsWith("cab"))
+                    {
+
+                        /*
+                         * if (blockType == null) // secondary cabs and amp&cab block cabs will come in here
+                        {
+                            _logger.LogInformation($"upgrading attached secondary cab block: {block.Name}");
+                            UpgradeLegacyCab(props, defaults.CabModelSecondaryOrAmpCabOverride, defaults.ForceOverrideSecondaryCab, defaults);
+
+                            json["data"]["tone"][dsp][blockName] = new JObject(props);
+                        }
+                        */
+                        if (blockType.Equals(new JValue(SingleCabBlockType)))
+                        {
+                            _logger.LogInformation($"Upgrading legacy single cab block: {block.Name}");
+
+                            UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, defaults, false);
+
+                            json["data"]["tone"][dsp][blockName] = new JObject(props);
+                        }
+                        else if (blockType.Equals(new JValue(DualCabBlockType)))
+                        {
+                            _logger.LogInformation($"Upgrading legacy dual cab block: {block.Name}");
+
+                            UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, defaults, true);
+                            props.Add(new JProperty("Pan", defaults.Pan));
+                            props.Add(new JProperty("Delay", defaults.Delay));
+
+                            // Write the main dual cab block properties to the document
+                            json["data"]["tone"][dsp][blockName] = new JObject(props);
+
+
+                            // Now update the linked cab block
+                            var linkedCabBlockName = block.Value["@cab"].ToString();
+                            if (linkedCabBlockName == null)
+                            {
+                                _logger.LogWarning($"No @cab property found on Dual block type with name {blockName}: {json}");
+                                continue;
+                            }
+
+                            var linkedCabProperties = json["data"]["tone"][dsp][linkedCabBlockName].Children().OfType<JProperty>().ToList();
+                            UpgradeLegacyCab(linkedCabProperties, defaults.CabModelSecondaryOrAmpCabOverride, defaults.ForceOverrideSecondaryCab, defaults, true);
+
+                            // Add Pan
+                            linkedCabProperties.Add(new JProperty("Pan", defaults.Pan));
+                            // Add Delay
+                            linkedCabProperties.Add(new JProperty("Delay", defaults.Delay));
+
+                            // Write the secondary dual cab block properties to the document
+                            json["data"]["tone"][dsp][linkedCabBlockName] = new JObject(props);
+                        }
+                        else
+                        {
+                            throw new Exception($"Cab block type ({blockType}) not recognised");
+                        }
                     }
-                    */
-                    if (blockType.Equals(new JValue(SingleCabBlockType)))
+
+                    // Deal with Amp and Cab blocks
+                    if (blockType.Equals(new JValue(AmpAndCabBlockType)))
                     {
-                        _logger.LogInformation($"Upgrading legacy single cab block: {block.Name}");
-
-                        UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, defaults, false);
-
-                        json["data"]["tone"][dsp][blockName] = new JObject(props);
-                    }
-                    else if (blockType.Equals(new JValue(DualCabBlockType)))
-                    {
-                        _logger.LogInformation($"Upgrading legacy dual cab block: {block.Name}");
-
-                        UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, defaults, true);
-                        props.Add(new JProperty("Pan", defaults.Pan));
-                        props.Add(new JProperty("Delay", defaults.Delay));
-
-                        // write the main dual cab block properties to the document
-                        json["data"]["tone"][dsp][blockName] = new JObject(props);
-
-
-                        // Now update the linked cab block
                         var linkedCabBlockName = block.Value["@cab"].ToString();
                         if (linkedCabBlockName == null)
                         {
-                            _logger.LogWarning($"No @cab property found on Dual block type with name {blockName}: {json}");
+                            _logger.LogWarning($"No @cab property found on Amp and Cab block type with name {blockName}: {json}");
                             continue;
                         }
 
-                        var cabProperties = json["data"]["tone"][dsp][linkedCabBlockName].Children().OfType<JProperty>().ToList();                        
-                        UpgradeLinkedCab(cabProperties, defaults);
+                        var cabProperties = json["data"]["tone"][dsp][linkedCabBlockName].Children().OfType<JProperty>().ToList();
+                        UpgradeLegacyCab(cabProperties, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, defaults, false);
                         // write the secondary dual cab block properties to the document
-                        json["data"]["tone"][dsp][linkedCabBlockName] = new JObject(props);
-                    }
-                    else if (blockType.Equals(new JValue(AmpAndCabBlockType)))
-                    {
-                        // TODO: implement for amp and cab
-                        throw new NotImplementedException("Migration of Amp and Cab blocks are not yet supported - working on it, check back tomorrow!");
-                    }
-                    else
-                    {
-                        throw new Exception($"Cab block type ({blockType}) not recognised");
+                        json["data"]["tone"][dsp][linkedCabBlockName] = new JObject(cabProperties);
                     }
                 }
+                catch (Exception e)
+                {
+                    throw new Exception($"Failed while trying to update block {blockName}. {e.Message}", e);
+                }
             }
-        }
-
-        private void UpgradeLinkedCab(List<JProperty> cabProperties, PresetUpdaterDefaults defaults)
-        {
-            UpgradeLegacyCab(cabProperties, defaults.CabModelSecondaryOrAmpCabOverride, defaults.ForceOverrideSecondaryCab, defaults, true);
-
-            // Delay
-            cabProperties.Add(new JProperty("Delay", defaults.Delay));
-
-            // Map mic, and change @mic to Mic
-            UpdateMicProperty(cabProperties);
-
-            // Pan
-            cabProperties.Add(new JProperty("Pan", defaults.Pan));
-
-            // TODO: implement for Amp and Cab block?
         }
 
         internal void UpgradeLegacyCab(List<JProperty> cabProperties, string? overrideCabModel, bool forceOverride, PresetUpdaterDefaults defaults, bool withPan)
