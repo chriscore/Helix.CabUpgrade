@@ -42,7 +42,7 @@ namespace Helix.CabUpgrade.Utils
 
             if (newCabModel == null)
             {
-                throw new Exception($"No default mapping defined for cab {oldCabModel} and no override cab was chosen. This probably means that the legacy cab does not exist in the new firmware. Please choose an override cab from the drop down, and try again.");
+                throw new Exception($"No default mapping defined for cab {oldCabModel} and no override cab was chosen. This means that there is not a new cab that directly corresponds to the legacy cab model '{oldCabModel}' in the new firmware. To continue, please choose an override cab whcih will be used instead from the drop down, and try again.");
             }
 
             return newCabModel;

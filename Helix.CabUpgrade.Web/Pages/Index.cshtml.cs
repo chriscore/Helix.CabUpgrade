@@ -74,11 +74,9 @@ namespace Helix.CabUpgrade.Web.Pages
             }
             catch (Exception e)
             {
-                /*
-                _logger.LogError(e, "Error occurred during user preset upgrade. Please get in touch via email to report a bug to chriscore361@googlemail.com");
-                Response.StatusCode = 400;
-                return Content($"{e.Message}{Environment.NewLine}{Environment.NewLine}{e.StackTrace}");
-                */
+                
+                _logger.LogError(e, "Error occurred during user preset upgrade.");
+                                
                 ErrorMessage = $"Something went wrong during user preset upgrade: {e.Message}";
                 IsError = true;
                 return Page();
