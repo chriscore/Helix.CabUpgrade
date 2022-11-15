@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using Helix.CabUpgrade.Utils.Enums;
+﻿using Helix.CabUpgrade.Utils.Enums;
 using Helix.CabUpgrade.Utils.Interfaces;
 using Helix.CabUpgrade.Utils.Tests.Properties;
 using Microsoft.Extensions.Logging;
@@ -48,7 +47,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             Assert.Equal(80.0, transformedCab["LowCut"].ToObject<float>());
             Assert.Equal("HD2_CabMicIr_4x12XXLV30", transformedCab["@model"].ToObject<string>());
             Assert.Equal(0, transformedCab["Mic"].ToObject<int>());
-            Assert.Equal(45.0, transformedCab["Angle"].ToObject<float>());
+            Assert.Equal(0.0, transformedCab["Angle"].ToObject<float>());
             Assert.Equal(0.39, transformedCab["Position"].ToObject<float>(), 2);
 
             Assert.Equal(Resources.Legacy_Single_Cab_Expected_Result, presetJson);
@@ -79,7 +78,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             Assert.Equal(80.0, transformedCab["LowCut"].ToObject<float>());
             Assert.Equal("HD2_CabMicIr_4x12XXLV30", transformedCab["@model"].ToObject<string>());
             Assert.Equal(0, transformedCab["Mic"].ToObject<int>());
-            Assert.Equal(45.0, transformedCab["Angle"].ToObject<float>());
+            Assert.Equal(0.0, transformedCab["Angle"].ToObject<float>());
             Assert.Equal(0.39, transformedCab["Position"].ToObject<float>(), 2);
         }
 
@@ -109,7 +108,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             Assert.Equal(80.0, transformedCab["LowCut"].ToObject<float>()); 
             Assert.Equal("HD2_CabMicIr_2x12JazzRivet", transformedCab["@model"].ToObject<string>());
             Assert.Equal(0, transformedCab["Mic"].ToObject<int>());
-            Assert.Equal(45.0, transformedCab["Angle"].ToObject<float>());
+            Assert.Equal(0.0, transformedCab["Angle"].ToObject<float>());
             Assert.Equal(0.39, transformedCab["Position"].ToObject<float>(), 2);
         }
 
@@ -144,11 +143,11 @@ namespace Helix.CabUpgrade.Utils.Tests
             Assert.Equal(8000.0, transformedCabPrimary["HighCut"].ToObject<float>());
             Assert.Equal(0.0, transformedCabPrimary["Level"].ToObject<float>());
             Assert.Equal(80.0, transformedCabPrimary["LowCut"].ToObject<float>());
-            Assert.Equal(45.0, transformedCabPrimary["Angle"].ToObject<float>());
+            Assert.Equal(0.0, transformedCabPrimary["Angle"].ToObject<float>());
             Assert.Equal(0.0, transformedCabPrimary["Delay"].ToObject<float>());
             Assert.Equal(2, transformedCabPrimary["@position"].ToObject<int>());
             Assert.Equal(0.50, transformedCabPrimary["Pan"].ToObject<float>());
-            Assert.Equal(45.0, transformedCabPrimary["Angle"].ToObject<float>());
+            Assert.Equal(0.0, transformedCabPrimary["Angle"].ToObject<float>());
             Assert.Equal(0.39, transformedCabPrimary["Position"].ToObject<float>(), 2);
 
             var transformedCabSecondary = JToken.Parse(result.PresetJson).SelectToken("$.data.tone.dsp0.cab0");
@@ -160,7 +159,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             Assert.Equal(80.0, transformedCabSecondary["LowCut"].ToObject<float>());
             Assert.Equal("HD2_CabMicIr_2x12MailC12QWithPan", transformedCabSecondary["@model"].ToObject<string>());
             Assert.Equal(0, transformedCabSecondary["Mic"].ToObject<int>());
-            Assert.Equal(45.0, transformedCabSecondary["Angle"].ToObject<float>());
+            Assert.Equal(0.0, transformedCabSecondary["Angle"].ToObject<float>());
             Assert.Equal(0.39, transformedCabSecondary["Position"].ToObject<float>(), 2);
             Assert.Equal(0.0, transformedCabSecondary["Delay"].ToObject<float>());
             Assert.Equal(0.50, transformedCabSecondary["Pan"].ToObject<float>());

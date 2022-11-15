@@ -71,7 +71,12 @@
                                         "Select Primary Cab Override"
                                     )
                                 </label>
-                                <input type="checkbox" asp-for="ForceOverridePrimaryCab"> Force override</input>
+                                <input type="checkbox" asp-for="ForceOverridePrimaryCab"> Force override <br />
+                                <input type="number" step="0.01" value="1.5" asp-for="PositionPrimaryCab" /> Position<br />
+                                <select asp-for="AnglePrimaryCab">
+                                    <option value="0">0 Degrees</option>
+                                    <option value="45">45 Degrees</option>
+                                </select> Angle
                             </div>
                         </td>
                         <td>
@@ -83,7 +88,12 @@
                                         "Select Secondary Cab Override"
                                     )
                                 </label>
-                                <input type="checkbox" asp-for="ForceOverrideSecondaryCab"> Force override</input>
+                                <input type="checkbox" asp-for="ForceOverrideSecondaryCab"> Force override <br />
+                                <input type="number" step="0.01" value="1.5" asp-for="PositionSecondaryCab" /> Position<br />
+                                <select asp-for="AngleSecondaryCab">
+                                    <option value="0">0 Degrees</option>
+                                    <option value="45">45 Degrees</option>
+                                </select> Angle
                             </div>
                         </td>
                     </tr>

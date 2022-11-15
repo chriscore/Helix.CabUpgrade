@@ -89,7 +89,7 @@ namespace Helix.CabUpgrade.Utils
                         {
                             _logger.LogInformation($"Upgrading legacy single cab block: {block.Name}");
 
-                            UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, defaults, false);
+                            UpgradeLegacyCab(props,defaults, false, true);
 
                             json["data"]["tone"][dsp][blockName] = new JObject(props);
                         }
@@ -97,7 +97,7 @@ namespace Helix.CabUpgrade.Utils
                         {
                             _logger.LogInformation($"Upgrading legacy dual cab block: {block.Name}");
 
-                            UpgradeLegacyCab(props, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, defaults, true);
+                            UpgradeLegacyCab(props, defaults, true, true);
                             props.Add(new JProperty("Pan", defaults.Pan));
                             props.Add(new JProperty("Delay", defaults.Delay));
 
@@ -114,7 +114,7 @@ namespace Helix.CabUpgrade.Utils
                             }
 
                             var linkedCabProperties = json["data"]["tone"][dsp][linkedCabBlockName].Children().OfType<JProperty>().ToList();
-                            UpgradeLegacyCab(linkedCabProperties, defaults.CabModelSecondaryOrAmpCabOverride, defaults.ForceOverrideSecondaryCab, defaults, true);
+                            UpgradeLegacyCab(linkedCabProperties, defaults, true, false);
 
                             // Add Pan
                             linkedCabProperties.Add(new JProperty("Pan", defaults.Pan));
@@ -141,7 +141,7 @@ namespace Helix.CabUpgrade.Utils
                         }
 
                         var cabProperties = json["data"]["tone"][dsp][linkedCabBlockName].Children().OfType<JProperty>().ToList();
-                        UpgradeLegacyCab(cabProperties, defaults.CabModelPrimaryOverride, defaults.ForceOverridePrimaryCab, defaults, false);
+                        UpgradeLegacyCab(cabProperties, defaults, false, true);
                         // write the secondary dual cab block properties to the document
                         json["data"]["tone"][dsp][linkedCabBlockName] = new JObject(cabProperties);
                     }
@@ -153,7 +153,7 @@ namespace Helix.CabUpgrade.Utils
             }
         }
 
-        internal void UpgradeLegacyCab(List<JProperty> cabProperties, string? overrideCabModel, bool forceOverride, PresetUpdaterDefaults defaults, bool withPan)
+        internal void UpgradeLegacyCab(List<JProperty> cabProperties, PresetUpdaterDefaults defaults, bool withPan, bool isPrimary)
         {
             /* 
             Properties which do not change:
@@ -171,7 +171,9 @@ namespace Helix.CabUpgrade.Utils
             */
 
             var oldCabModel = cabProperties.SingleOrDefault(a => a.Name.Equals("@model")).Value.ToString();
-            var newModel = _cabMapper.MapNewCabModel(oldCabModel, overrideCabModel, forceOverride);
+            var cabModelOverride = isPrimary ? defaults.CabModelPrimaryOverride : defaults.CabModelSecondaryOrAmpCabOverride;
+            var forceOverride = isPrimary ? defaults.ForceOverridePrimaryCab : defaults.ForceOverrideSecondaryCab;
+            var newModel = _cabMapper.MapNewCabModel(oldCabModel, cabModelOverride, forceOverride);
 
             // Cabs from Dual cab blocks have a pan parameter. Cabs from Amp and cab blocks don't.
             if (withPan)
@@ -184,7 +186,8 @@ namespace Helix.CabUpgrade.Utils
             UpdateMicProperty(cabProperties);
 
             // Add new required properties with default values
-            cabProperties.Add(new JProperty("Angle", defaults.Angle));
+            var angle = isPrimary ? defaults.AnglePrimaryCab : defaults.AngleSecondaryCab;
+            cabProperties.Add(new JProperty("Angle", angle));
             cabProperties.Add(new JProperty("Position", defaults.Position));
 
             // Try to remove early reflections

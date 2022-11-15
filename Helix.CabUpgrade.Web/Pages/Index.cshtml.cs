@@ -37,6 +37,14 @@ namespace Helix.CabUpgrade.Web.Pages
         public bool ForceOverridePrimaryCab { get; set; }
         [BindProperty]
         public bool ForceOverrideSecondaryCab { get; set; }
+        [BindProperty]
+        public decimal PositionPrimaryCab { get; set; } // TODO: map this
+        [BindProperty]
+        public decimal PositionSecondaryCab { get; set; } // TODO: map this
+        [BindProperty]
+        public decimal AnglePrimaryCab { get; set; } // TODO: map this
+        [BindProperty]
+        public decimal AngleSecondaryCab { get; set; } // TODO: map this
 
         [BindProperty]
         public bool IsError { get; set; }
@@ -65,6 +73,7 @@ namespace Helix.CabUpgrade.Web.Pages
                     ForceOverridePrimaryCab = ForceOverridePrimaryCab,
                     ForceOverrideSecondaryCab = ForceOverrideSecondaryCab
                 };
+                
                 var result = _presetUpdater.UpdatePresetJson(json, defaults);
 
                 byte[] bytes = Encoding.ASCII.GetBytes(result.PresetJson);

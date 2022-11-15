@@ -8,7 +8,6 @@ namespace Helix.CabUpgrade.Utils
 {
     public class PresetUpdaterDefaults
     {
-        public double Angle { get; set; } = 45.0;
         public double Delay { get; set; } = 0.0;
         public double Pan { get; set; } = 0.50;
         public double Position { get; set; } = 0.390;
@@ -16,5 +15,9 @@ namespace Helix.CabUpgrade.Utils
         public string? CabModelSecondaryOrAmpCabOverride { get; set; } = null;
         public bool ForceOverridePrimaryCab { get; set; }
         public bool ForceOverrideSecondaryCab { get; set; }
+        public decimal AnglePrimaryCab { get; set; }
+        public decimal AngleSecondaryCab { get; set; }
+        public decimal PositionPrimaryCab { get; set; }
+        public decimal PositionSecondaryCab { get; set; }
     }
 }
