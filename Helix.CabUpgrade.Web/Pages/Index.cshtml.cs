@@ -38,13 +38,13 @@ namespace Helix.CabUpgrade.Web.Pages
         [BindProperty]
         public bool ForceOverrideSecondaryCab { get; set; }
         [BindProperty]
-        public decimal PositionPrimaryCab { get; set; } // TODO: map this
+        public decimal PositionPrimaryCab { get; set; }
         [BindProperty]
-        public decimal PositionSecondaryCab { get; set; } // TODO: map this
+        public decimal PositionSecondaryCab { get; set; }
         [BindProperty]
-        public decimal AnglePrimaryCab { get; set; } // TODO: map this
+        public decimal AnglePrimaryCab { get; set; }
         [BindProperty]
-        public decimal AngleSecondaryCab { get; set; } // TODO: map this
+        public decimal AngleSecondaryCab { get; set; }
 
         [BindProperty]
         public bool IsError { get; set; }
@@ -68,10 +68,14 @@ namespace Helix.CabUpgrade.Web.Pages
 
                 var defaults = new PresetUpdaterDefaults()
                 {
-                    CabModelPrimaryOverride = SelectedPrimaryCab,
-                    CabModelSecondaryOrAmpCabOverride = SelectedSecondaryCab,
+                    SelectedPrimaryCab = SelectedPrimaryCab,
+                    SelectedSecondaryCab = SelectedSecondaryCab,
                     ForceOverridePrimaryCab = ForceOverridePrimaryCab,
-                    ForceOverrideSecondaryCab = ForceOverrideSecondaryCab
+                    ForceOverrideSecondaryCab = ForceOverrideSecondaryCab,
+                    PositionPrimaryCab = PositionPrimaryCab,
+                    PositionSecondaryCab = PositionSecondaryCab,
+                    AnglePrimaryCab = AnglePrimaryCab,
+                    AngleSecondaryCab = AngleSecondaryCab
                 };
                 
                 var result = _presetUpdater.UpdatePresetJson(json, defaults);

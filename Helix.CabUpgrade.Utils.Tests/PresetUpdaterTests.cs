@@ -48,7 +48,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             Assert.Equal("HD2_CabMicIr_4x12XXLV30", transformedCab["@model"].ToObject<string>());
             Assert.Equal(0, transformedCab["Mic"].ToObject<int>());
             Assert.Equal(0.0, transformedCab["Angle"].ToObject<float>());
-            Assert.Equal(0.39, transformedCab["Position"].ToObject<float>(), 2);
+            Assert.Equal(0.15, transformedCab["Position"].ToObject<float>(), 2);
 
             Assert.Equal(Resources.Legacy_Single_Cab_Expected_Result, presetJson);
         }
@@ -79,7 +79,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             Assert.Equal("HD2_CabMicIr_4x12XXLV30", transformedCab["@model"].ToObject<string>());
             Assert.Equal(0, transformedCab["Mic"].ToObject<int>());
             Assert.Equal(0.0, transformedCab["Angle"].ToObject<float>());
-            Assert.Equal(0.39, transformedCab["Position"].ToObject<float>(), 2);
+            Assert.Equal(0.15, transformedCab["Position"].ToObject<float>(), 2);
         }
 
         [Fact]
@@ -109,7 +109,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             Assert.Equal("HD2_CabMicIr_2x12JazzRivet", transformedCab["@model"].ToObject<string>());
             Assert.Equal(0, transformedCab["Mic"].ToObject<int>());
             Assert.Equal(0.0, transformedCab["Angle"].ToObject<float>());
-            Assert.Equal(0.39, transformedCab["Position"].ToObject<float>(), 2);
+            Assert.Equal(0.15, transformedCab["Position"].ToObject<float>(), 2);
         }
 
         [Fact]
@@ -148,7 +148,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             Assert.Equal(2, transformedCabPrimary["@position"].ToObject<int>());
             Assert.Equal(0.50, transformedCabPrimary["Pan"].ToObject<float>());
             Assert.Equal(0.0, transformedCabPrimary["Angle"].ToObject<float>());
-            Assert.Equal(0.39, transformedCabPrimary["Position"].ToObject<float>(), 2);
+            Assert.Equal(0.15, transformedCabPrimary["Position"].ToObject<float>(), 2);
 
             var transformedCabSecondary = JToken.Parse(result.PresetJson).SelectToken("$.data.tone.dsp0.cab0");
 
@@ -160,7 +160,7 @@ namespace Helix.CabUpgrade.Utils.Tests
             Assert.Equal("HD2_CabMicIr_2x12MailC12QWithPan", transformedCabSecondary["@model"].ToObject<string>());
             Assert.Equal(0, transformedCabSecondary["Mic"].ToObject<int>());
             Assert.Equal(0.0, transformedCabSecondary["Angle"].ToObject<float>());
-            Assert.Equal(0.39, transformedCabSecondary["Position"].ToObject<float>(), 2);
+            Assert.Equal(0.15, transformedCabSecondary["Position"].ToObject<float>(), 2);
             Assert.Equal(0.0, transformedCabSecondary["Delay"].ToObject<float>());
             Assert.Equal(0.50, transformedCabSecondary["Pan"].ToObject<float>());
         }

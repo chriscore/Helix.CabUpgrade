@@ -10,14 +10,13 @@ namespace Helix.CabUpgrade.Utils
     {
         public double Delay { get; set; } = 0.0;
         public double Pan { get; set; } = 0.50;
-        public double Position { get; set; } = 0.390;
-        public string? CabModelPrimaryOverride { get; set; } = null;
-        public string? CabModelSecondaryOrAmpCabOverride { get; set; } = null;
+        public string? SelectedPrimaryCab { get; set; } = null;
+        public string? SelectedSecondaryCab { get; set; } = null;
         public bool ForceOverridePrimaryCab { get; set; }
         public bool ForceOverrideSecondaryCab { get; set; }
-        public decimal AnglePrimaryCab { get; set; }
-        public decimal AngleSecondaryCab { get; set; }
-        public decimal PositionPrimaryCab { get; set; }
-        public decimal PositionSecondaryCab { get; set; }
+        public decimal AnglePrimaryCab { get; set; } = decimal.Zero;
+        public decimal AngleSecondaryCab { get; set; } = decimal.Zero;
+        public decimal PositionPrimaryCab { get; set; } = 0.150M;
+        public decimal PositionSecondaryCab { get; set; } = 0.150M;
     }
 }

@@ -2765,7 +2765,7 @@
           "@model": "HD2_CabMicIr_4x12XXLV30",
           "Mic": 0,
           "Angle": 0.0,
-          "Position": 0.39
+          "Position": 0.150
         },
         "inputA": {
           "@input": 1,

@@ -171,7 +171,7 @@ namespace Helix.CabUpgrade.Utils
             */
 
             var oldCabModel = cabProperties.SingleOrDefault(a => a.Name.Equals("@model")).Value.ToString();
-            var cabModelOverride = isPrimary ? defaults.CabModelPrimaryOverride : defaults.CabModelSecondaryOrAmpCabOverride;
+            var cabModelOverride = isPrimary ? defaults.SelectedPrimaryCab : defaults.SelectedSecondaryCab;
             var forceOverride = isPrimary ? defaults.ForceOverridePrimaryCab : defaults.ForceOverrideSecondaryCab;
             var newModel = _cabMapper.MapNewCabModel(oldCabModel, cabModelOverride, forceOverride);
 
@@ -185,10 +185,12 @@ namespace Helix.CabUpgrade.Utils
 
             UpdateMicProperty(cabProperties);
 
-            // Add new required properties with default values
+            // Add new required properties with set values
             var angle = isPrimary ? defaults.AnglePrimaryCab : defaults.AngleSecondaryCab;
             cabProperties.Add(new JProperty("Angle", angle));
-            cabProperties.Add(new JProperty("Position", defaults.Position));
+
+            var position = isPrimary ? defaults.PositionPrimaryCab : defaults.PositionSecondaryCab;
+            cabProperties.Add(new JProperty("Position", position));
 
             // Try to remove early reflections
             cabProperties.Remove(cabProperties.SingleOrDefault(a => a.Name.Equals("EarlyReflections")));
