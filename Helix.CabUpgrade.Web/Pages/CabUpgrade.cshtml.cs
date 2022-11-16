@@ -7,16 +7,16 @@ using System.Text;
 
 namespace Helix.CabUpgrade.Web.Pages
 {
-    public class IndexModel : PageModel
+    public class CabUpgradeModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<CabUpgradeModel> _logger;
         private readonly IPresetUpdater _presetUpdater;
         public readonly Settings _settings;
 
         public static NewCabRepository NewCabRepository { get; set; }
         
 
-        public IndexModel(ILogger<IndexModel> logger, IPresetUpdater updater, IOptionsSnapshot<Settings> options)
+        public CabUpgradeModel(ILogger<CabUpgradeModel> logger, IPresetUpdater updater, IOptionsSnapshot<Settings> options)
         {
             _logger = logger;
             _presetUpdater = updater;
