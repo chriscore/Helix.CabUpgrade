@@ -9,105 +9,13 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
 </div>
-<div>
+<br />
+<br />
+<br />
+<div class="text-center">
     <p>
-        This tool can be used to upgrade the legacy cab blocks in Helix patches that were built before Firmware 3.50 to the new Helix cabs! <br />
-        It supports patches containing:
-        <ul>
-            <li>Single legacy cab blocks</li>
-            <li>Dual legacy cab blocks</li>
-            <li>Amp&Cab blocks</li>
-            <li>Blocks on different DSPs</li>
-            <li>Multiple cab/amp blocks</li>
-            <li>Blocks on split paths</li>
-            <li>Cab parameters controlled by Snapshots</li>
-        </ul>
-        Support for bass cabs is not currently guaranteed. <br /><br />
-        <b>Guide:</b>Export a helix preset from HX Edit. <br />
-        Use the buttons at the bottom of the page to choose a .hlx preset file, then press Submit.<br /> 
-        Your updated preset will be downloaded.<br />
-        Load the updated preset into HX Edit.
+        This site contains tools which can be used to perform automated tasks on files exported by Line 6 Helix.<br />
+        Please use the navigation at the top of the page to browse through tools.
     </p><br />
 </div>
-<div class="text-left">
-    <div class="alert-info">
-        <p>
-            <b>Important! </b>This tool is a personal project in very early development, so please make sure you have a backup of your patches if you import any created by it<br />
-            <br />
-            <b>Important! </b>Not all Legacy cabs have a corresponding new cab in the 3.50 Helix Firmware - some were removed by Line 6 (see below) <br />
-        </p>
-    </div>
-    <br />
-    <div class="alert-success">
-        <p>
-            <b>Info</b><br />
-            If your preset uses a cab which was not moved to the new Helix firmware, you need to choose a new cab to migrate to. <br />
-            Please choose a Primary/Secondary target cab override using the drop downs to migrate to a new cab model.<br />
-            The selected override cabs will be used if there is no corresponding new cab, or if Force Override is ticked.<br />
-            If there is a matching new cab, and Force Override is not ticked, your cab will be directly updated.<br />
-            If you don't choose an override cab, you may see an error attempting to map the cab if there is no corresponding new model. <br />
-            You can force your legacy cab to migrate to a completely different new cab model by ticking the 'Force override' checkbox.<br />
-        </p>
-    </div>
-    <br /><br />
-</div>
-<div class="text-center">
-    <form method="post" enctype="multipart/form-data">
-        <div>
-            <table border="1px" width="100%">
-                <tbody>
-                    <tr>
-                        <th style="border-right: 1px solid #333">Primary Cab<br />(Single Cab blocks/First cab of dual cab blocks/Amp&Cab blocks)</th>
-                        <th>Secondary Cab<br />(Second cab of dual cab blocks)</th>
-                        
-                    </tr>
-                    <tr>
-                        <td style="border-right: 1px solid #333">
-                            <div>
-                                <label asp-for="SelectedPrimaryCab">
-                                    @Html.DropDownListFor(
-                                        m => m.SelectedPrimaryCab,
-                                        new SelectList(IndexModel.NewCabRepository.GetNewCabs(), "Id", "Name"),
-                                        "Select Primary Cab Override"
-                                    )
-                                </label>
-                                <input type="checkbox" asp-for="ForceOverridePrimaryCab"> Force override <br />
-                                <input type="number" step="0.01" value="1.5" asp-for="PositionPrimaryCab" /> Position<br />
-                                <select asp-for="AnglePrimaryCab">
-                                    <option value="0">0 Degrees</option>
-                                    <option value="45">45 Degrees</option>
-                                </select> Angle
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <label asp-for="SelectedSecondaryCab">
-                                    @Html.DropDownListFor(
-                                        m => m.SelectedSecondaryCab,
-                                        new SelectList(IndexModel.NewCabRepository.GetNewCabs(), "Id", "Name"),
-                                        "Select Secondary Cab Override"
-                                    )
-                                </label>
-                                <input type="checkbox" asp-for="ForceOverrideSecondaryCab"> Force override <br />
-                                <input type="number" step="0.01" value="1.5" asp-for="PositionSecondaryCab" /> Position<br />
-                                <select asp-for="AngleSecondaryCab">
-                                    <option value="0">0 Degrees</option>
-                                    <option value="45">45 Degrees</option>
-                                </select> Angle
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <br />
-        <div class="alert-warning" id="errorMsg">
-            @Html.DisplayTextFor(m => m.ErrorMessage)
-        </div>
-        <div>
-            <label for="file">Helix Preset to Update: </label>
-            <input type="file" accept=".hlx" asp-for="Upload" />
-            <input type="submit" onclick="clearError()" />
-        </div>
-    </form>
-</div>
+
