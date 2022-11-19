@@ -14,38 +14,26 @@
         This tool can be used to upgrade the legacy cab blocks in Helix patches that were built before Firmware 3.50 to the new Helix cabs! <br />
         It supports patches containing:
         <ul>
-            <li>Single legacy cab blocks</li>
-            <li>Dual legacy cab blocks</li>
-            <li>Amp&Cab blocks</li>
+            <li>Multiple Single, Dual and Amp&Cab legacy blocks</li>
             <li>Blocks on different DSPs</li>
-            <li>Multiple cab/amp blocks</li>
             <li>Blocks on split paths</li>
             <li>Cab parameters controlled by Snapshots</li>
         </ul>
         Support for bass cabs is not currently guaranteed. <br /><br />
-        <b>Guide:</b>Export a helix preset from HX Edit. <br />
-        Use the buttons at the bottom of the page to choose a .hlx preset file, then press Submit.<br /> 
-        Your updated preset will be downloaded.<br />
-        Load the updated preset into HX Edit.
-    </p><br />
+        <b>Guide:</b>Export your helix preset from HX Edit and use the Choose File button at the bottom of the page to choose your .hlx file then press Submit.<br /> 
+        Your updated preset will be downloaded. Finally, import the updated preset into HX Edit.
+    </p>
 </div>
 <div class="text-left">
-    <div class="alert-info">
-        <p>
-            <b>Important! </b>This tool is a personal project in very early development, so please make sure you have a backup of your patches if you import any created by it<br />
-            <br />
-            <b>Important! </b>Not all Legacy cabs have a corresponding new cab in the 3.50 Helix Firmware - some were removed by Line 6 (see below) <br />
-        </p>
-    </div>
     <br />
     <div class="alert-success">
         <p>
             <b>Info</b><br />
-            If your preset uses a cab which was not moved to the new Helix firmware, you need to choose a new cab to migrate to. <br />
+            Some cabs were removed in 3.50. If your preset uses a cab which is not in the new Helix firmware, you need to choose a new cab to migrate to. <br />
             Please choose a Primary/Secondary target cab override using the drop downs to migrate to a new cab model.<br />
             The selected override cabs will be used if there is no corresponding new cab, or if Force Override is ticked.<br />
-            If there is a matching new cab, and Force Override is not ticked, your cab will be directly updated.<br />
-            If you don't choose an override cab, you may see an error attempting to map the cab if there is no corresponding new model. <br />
+            If there is a matching new cab, and Force Override is not ticked, your cab will be updated to the matching new model.<br />
+            If you don't choose an override cab, you may see an error attempting to map the cab if there is no corresponding new model.<br />
             You can force your legacy cab to migrate to a completely different new cab model by ticking the 'Force override' checkbox.<br />
         </p>
     </div>
@@ -57,8 +45,8 @@
             <table border="1px" width="100%">
                 <tbody>
                     <tr>
-                        <th style="border-right: 1px solid #333">Primary Cab<br />(Single Cab blocks/First cab of dual cab blocks/Amp&Cab blocks)</th>
-                        <th>Secondary Cab<br />(Second cab of dual cab blocks)</th>
+                        <th style="border-right: 1px solid #333" width="50%">Primary Cab<br />(Single Cab blocks/First cab of dual cab blocks/Amp&Cab blocks)</th>
+                        <th width="50%">Secondary Cab<br />(Second cab of dual cab blocks)</th>
                         
                     </tr>
                     <tr>

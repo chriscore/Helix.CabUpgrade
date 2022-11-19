@@ -6,3 +6,4 @@ function clearError() {
     var error = document.querySelector('#errorMsg');
     error.textContent = "";
 }
+
