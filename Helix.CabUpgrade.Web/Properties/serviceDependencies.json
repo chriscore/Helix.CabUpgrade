@@ -3,6 +3,11 @@
     "appConfig1": {
       "type": "appConfig",
       "connectionId": "AppConfig"
+    },
+    "appConfig2": {
+      "type": "appConfig",
+      "connectionId": "AppConfig",
+      "dynamicId": null
     }
   }
 }

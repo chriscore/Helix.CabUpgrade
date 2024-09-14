@@ -3,15 +3,16 @@
 @using Helix.CabUpgrade.Utils.Enums
 @model CabUpgradeModel
 @{
-    ViewData["Title"] = "Cab Upgrade";
+    ViewData["Title"] = "Helix Cab Upgrade";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Cab Upgrade</h1>
-</div>
+<h1>@ViewData["Title"]</h1>
+<br /><br />
 <div>
     <p>
         This tool can be used to upgrade the legacy cab blocks in Helix patches that were built before Firmware 3.50 to the new Helix cabs! <br />
+        
+        <b>Important! </b>This tool is a personal project in very early development. Please make sure you have a backup of your patches before using it.<br />
+
         It supports patches containing:
         <ul>
             <li>Multiple Single, Dual and Amp&Cab legacy blocks</li>
